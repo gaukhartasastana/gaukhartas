@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="../assets/logo.webp?v=2" type="image/webp">
+<link rel="apple-touch-icon" href="../assets/logo.webp?v=2">
+
+<title>Большой зал — Гаухартас | Той до 300 гостей в Астане</title>
+<meta name="description" content="Большой зал банкетного комплекса «Гаухартас» в Астане: LED-экран во всю сцену, хрустальные люстры, танцпол по центру. Үйлену той, ұзату той, корпоратив — до 300 гостей.">
+<link rel="canonical" href="https://gaukhartas.com/big/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="keywords" content="большой зал Астана, банкетный зал на 300 гостей Астана, зал на 300 гостей, үйлену той, ұзату той, корпоратив Астана">
+<meta name="geo.region" content="KZ-AST">
+<meta name="geo.placename" content="Астана">
+<meta name="geo.position" content="51.167786;71.388918">
+<link rel="alternate" hreflang="ru-KZ" href="https://gaukhartas.com/big/">
+<link rel="alternate" hreflang="x-default" href="https://gaukhartas.com/big/">
+<meta property="og:url" content="https://gaukhartas.com/big/">
+<meta property="og:site_name" content="Гаухартас">
+<meta property="og:locale" content="ru_KZ">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RR0RH6S9BT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RR0RH6S9BT');
+</script>
+
+<meta name="theme-color" content="#0B0908">
+
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="Большой зал — Гаухартас">
+<meta property="og:description" content="Зал до 300 гостей. Сцена с LED-экраном, хрустальные люстры, танцпол.">
+<meta property="og:image" content="assets/bh-hall-wide-1700.webp">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/exterior-1080.webp" fetchpriority="high">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ink:    '#0B0908',
+        onyx:   '#17120C',
+        onyx2:  '#221A11',
+        gold:   '#C9A44C',
+        goldlt: '#E6C87F',
+        champ:  '#E8D9BC',
+        amber:  '#B8763A',
+        cream:  '#F5EFE3'
+      },
+      fontFamily: {
+        display: ['"Bodoni Moda"', 'Georgia', 'serif'],
+        sans:    ['Manrope', 'system-ui', 'sans-serif']
+      }
+    }
+  }
+};
+</script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   ГАУХАРТАС · БОЛЬШОЙ ЗАЛ
+   Палитра снята с самого помещения: тёмный оникс сцены, золото
+   кресел и люстр, шампань текстиля, глянец мраморного пола.
+   Сигнатурный приём — «блик люстры»: световая полоса, которая
+   идёт по золотым линиям и ведёт взгляд вниз по странице.
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0B0908; --onyx:#17120C; --onyx2:#221A11;
+  --gold:#C9A44C; --goldlt:#E6C87F; --champ:#E8D9BC;
+  --amber:#B8763A; --cream:#F5EFE3;
+  --pan-r: 520px;            /* радиус 3D-цилиндра, меняется скриптом */
+  --sweep: 0;                /* положение блика, 0…1 */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+body{
+  margin:0; background:var(--ink); color:var(--cream);
+  font-family:Manrope,system-ui,sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body.loading{overflow:hidden;height:100vh}
+
+img{display:block;max-width:100%}
+::selection{background:var(--gold);color:#0B0908}
+
+/* золотая линия с бегущим бликом — повторяется как мотив */
+.rule{
+  position:relative;height:1px;width:100%;
+  background:linear-gradient(90deg,transparent,rgba(201,164,76,.34) 18%,rgba(201,164,76,.34) 82%,transparent);
+}
+.rule::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(245,239,227,.9) 50%,transparent 100%);
+  width:26%; left:calc(var(--sweep) * 120% - 13%);
+  filter:blur(.3px); opacity:.75;
+}
+
+.eyebrow{
+  font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);font-weight:600
+}
+.serif{font-family:'Bodoni Moda',Georgia,serif;font-weight:400}
+
+/* ── ПРЕЛОАДЕР ── */
+#pre{position:fixed;inset:0;z-index:9999;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px}
+#pre .mark{font-family:'Bodoni Moda',serif;font-size:clamp(26px,5vw,44px);
+  letter-spacing:.3em;color:var(--champ);opacity:.9}
+#pre .track{width:min(240px,54vw);height:1px;background:rgba(201,164,76,.2);overflow:hidden}
+#pre .fill{height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--goldlt))}
+#pre .pct{font-size:11px;letter-spacing:.2em;color:rgba(245,239,227,.4)}
+
+/* ── ШАПКА ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px clamp(16px,3vw,42px);
+  background:linear-gradient(180deg,rgba(11,9,8,.92),rgba(11,9,8,.55) 70%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  opacity:0;pointer-events:none;transition:opacity .6s}
+.topbar.on{opacity:1;pointer-events:auto}
+.topbar a.cta{
+  border:1px solid rgba(201,164,76,.5);border-radius:100px;
+  padding:11px 22px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--goldlt);font-weight:600;transition:background .3s,color .3s;white-space:nowrap}
+.topbar a.cta:hover{background:var(--gold);color:#0B0908}
+
+/* ── СЦЕНА 1: ФАСАД ── */
+#exterior{position:relative;height:100svh;overflow:hidden}
+#exterior .shot{position:absolute;inset:-6%;will-change:transform}
+#exterior .shot img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+#exterior .veil{position:absolute;inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 8%,rgba(11,9,8,0) 30%,rgba(11,9,8,.72) 100%),
+    linear-gradient(180deg,rgba(11,9,8,.66) 0%,rgba(11,9,8,.2) 38%,rgba(11,9,8,.92) 100%)}
+
+.hero-wrap{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:0 20px;z-index:3}
+.hero-ttl{font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(46px,12vw,164px);line-height:.92;letter-spacing:-.015em;
+  color:var(--cream);margin:0}
+.hero-ttl .ch{display:inline-block;will-change:transform,opacity}
+.hero-sub{margin-top:22px;font-size:clamp(12px,1.5vw,15px);letter-spacing:.34em;
+  text-transform:uppercase;color:rgba(232,217,188,.66);font-weight:500}
+
+.scroll-cue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:4;display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-cue span{font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(232,217,188,.45)}
+.scroll-cue .bar{width:1px;height:46px;background:linear-gradient(180deg,rgba(201,164,76,.7),transparent);
+  transform-origin:top;animation:cue 2.4s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:scaleY(.3);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+/* ── СЦЕНА 2: ПОРОГ. Створки расходятся, за ними интерьер ── */
+#threshold{position:relative;height:220svh}
+.th-stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink)}
+.th-inner{position:absolute;inset:0;overflow:hidden}
+.th-inner img{width:100%;height:100%;object-fit:cover;object-position:50% 55%;
+  transform:scale(1.28);will-change:transform}
+.th-inner::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,9,8,.5),rgba(11,9,8,.12) 45%,rgba(11,9,8,.8))}
+.door{position:absolute;top:0;bottom:0;width:50.5%;z-index:4;will-change:transform;
+  background:
+    linear-gradient(180deg,rgba(34,26,17,.5),rgba(11,9,8,.5)),
+    var(--onyx)}
+.door.l{left:0;border-right:1px solid rgba(201,164,76,.5)}
+.door.r{right:0;border-left:1px solid rgba(201,164,76,.5)}
+.door::before{content:'';position:absolute;inset:26px;
+  border:1px solid rgba(201,164,76,.16)}
+.door::after{content:'';position:absolute;top:50%;width:46px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.door.l::after{right:24px}
+.door.r::after{left:24px}
+.th-cap{position:absolute;left:0;right:0;bottom:9vh;z-index:5;text-align:center;
+  padding:0 20px;will-change:transform,opacity}
+.th-cap h2{font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(30px,6.4vw,78px);line-height:1.04;margin:0 0 14px}
+.th-cap p{max-width:52ch;margin:0 auto;font-size:clamp(13px,1.4vw,16px);
+  line-height:1.7;color:rgba(245,239,227,.62)}
+
+/* ── СЦЕНА 3: 3D-ПАНОРАМА ── */
+#panorama{position:relative;height:340svh}
+.pan-stage{position:sticky;top:0;height:100svh;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 50%,var(--onyx) 0%,var(--ink) 68%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pan-head{position:absolute;top:clamp(74px,11vh,120px);left:0;right:0;text-align:center;z-index:6;
+  padding:0 20px;pointer-events:none}
+.pan-head h2{font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(26px,4.6vw,54px);margin:8px 0 0}
+
+.viewport{position:relative;width:100%;height:min(60svh,520px);
+  perspective:1400px;perspective-origin:50% 50%;
+  touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.viewport.grabbing{cursor:grabbing}
+.cylinder{position:absolute;top:50%;left:50%;width:0;height:0;
+  transform-style:preserve-3d;will-change:transform}
+.pane{position:absolute;
+  width:clamp(230px,31vw,430px);
+  aspect-ratio:3/2;
+  margin-left:calc(clamp(230px,31vw,430px) / -2);
+  margin-top:calc(clamp(230px,31vw,430px) / -3);
+  transform-style:preserve-3d;
+  -webkit-backface-visibility:hidden;backface-visibility:hidden}
+.pane figure{position:relative;margin:0;width:100%;height:100%;overflow:hidden;
+  border-radius:3px;border:1px solid rgba(201,164,76,.22);
+  box-shadow:0 26px 70px rgba(0,0,0,.6)}
+.pane img{width:100%;height:100%;object-fit:cover;
+  filter:saturate(.94) brightness(.82);transition:filter .45s}
+.pane figure::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,9,8,.05),rgba(11,9,8,.6));
+  transition:opacity .45s}
+.pane.focus img{filter:saturate(1.04) brightness(1)}
+.pane.focus figure::after{opacity:.25}
+.pane.focus figure{border-color:rgba(230,200,127,.6)}
+.pane figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 18px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--champ);opacity:0;transform:translateY(8px);transition:.45s;z-index:2}
+.pane.focus figcaption{opacity:1;transform:none}
+
+.pan-ui{position:absolute;bottom:clamp(22px,5vh,52px);left:0;right:0;z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 20px}
+.compass{position:relative;width:min(300px,72vw);height:1px;background:rgba(201,164,76,.2)}
+.compass i{position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;
+  background:var(--goldlt);box-shadow:0 0 12px rgba(230,200,127,.8);
+  transform:translateX(-50%);transition:left .12s linear}
+.pan-hint{font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(245,239,227,.4);display:flex;align-items:center;gap:10px}
+.pan-hint b{color:var(--goldlt);font-weight:600}
+.pan-arrows{display:flex;gap:12px}
+.pan-arrows button{width:46px;height:46px;border-radius:50%;
+  border:1px solid rgba(201,164,76,.34);background:rgba(23,18,12,.6);
+  color:var(--goldlt);font-size:17px;cursor:pointer;transition:.3s;
+  -webkit-tap-highlight-color:transparent}
+.pan-arrows button:hover{background:var(--gold);color:#0B0908;border-color:var(--gold)}
+
+/* ── СЦЕНА 4: ГОРИЗОНТАЛЬНЫЕ СЛАЙДЫ ── */
+#details{position:relative}
+.h-stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink)}
+.h-track{display:flex;height:100%;will-change:transform}
+.slide{flex:0 0 100vw;height:100%;position:relative;
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  gap:clamp(20px,4vw,64px);padding:0 clamp(20px,6vw,110px)}
+.slide .pic{position:relative;height:min(66svh,560px);overflow:hidden;border-radius:3px;
+  border:1px solid rgba(201,164,76,.18)}
+.slide .pic img{width:100%;height:100%;object-fit:cover;transform:scale(1.14);will-change:transform}
+.slide .txt{max-width:46ch}
+.slide .num{font-family:'Bodoni Moda',serif;font-size:clamp(40px,6vw,86px);
+  color:rgba(201,164,76,.2);line-height:1;margin-bottom:6px}
+.slide h3{font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(24px,3.4vw,44px);line-height:1.12;margin:10px 0 16px}
+.slide p{font-size:clamp(13px,1.35vw,16px);line-height:1.75;color:rgba(245,239,227,.6);margin:0}
+.slide ul{margin:22px 0 0;padding:0;list-style:none;display:grid;gap:9px}
+.slide li{display:flex;gap:11px;align-items:baseline;font-size:13.5px;color:rgba(245,239,227,.72)}
+.slide li::before{content:'';flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--amber);transform:translateY(-2px)}
+
+/* ── ХАРАКТЕРИСТИКИ ── */
+#specs{padding:clamp(70px,12vh,140px) clamp(20px,5vw,80px)}
+.spec-grid{max-width:1180px;margin:44px auto 0;display:grid;
+  grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(201,164,76,.18)}
+.spec-grid div{padding:30px 20px;border-right:1px solid rgba(201,164,76,.12)}
+.spec-grid div:last-child{border-right:none}
+.spec-grid b{display:block;font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(28px,3.6vw,46px);color:var(--goldlt);line-height:1}
+.spec-grid span{display:block;margin-top:9px;font-size:10.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(245,239,227,.4)}
+
+/* ── ФИНАЛ ── */
+#cta{position:relative;min-height:92svh;display:flex;align-items:center;
+  justify-content:center;text-align:center;overflow:hidden;padding:80px 20px}
+#cta .bg{position:absolute;inset:0;z-index:0}
+#cta .bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.34) saturate(.9)}
+#cta .bg::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(80% 60% at 50% 50%,rgba(11,9,8,.4),rgba(11,9,8,.92))}
+#cta .box{position:relative;z-index:2;max-width:640px}
+#cta h2{font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:clamp(32px,6vw,74px);line-height:1.05;margin:14px 0 18px}
+#cta p{font-size:clamp(13px,1.4vw,16px);line-height:1.75;color:rgba(245,239,227,.62);margin:0 auto 34px;max-width:44ch}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:54px;padding:0 30px;border-radius:100px;font-size:11.5px;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;transition:.3s}
+.btn-p{background:linear-gradient(135deg,var(--goldlt),var(--gold));color:#0B0908}
+.btn-p:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn-s{border:1px solid rgba(201,164,76,.44);color:var(--goldlt)}
+.btn-s:hover{background:rgba(201,164,76,.14)}
+
+footer{padding:38px clamp(20px,5vw,80px);border-top:1px solid rgba(201,164,76,.12);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:11.5px;color:rgba(245,239,227,.36)}
+footer a{color:rgba(230,200,127,.7)}
+
+.reveal{opacity:0;transform:translateY(26px)}
+
+/* ── АДАПТИВ ── */
+@media (max-width:900px){
+  .slide{grid-template-columns:1fr;align-content:center;gap:22px;padding:80px clamp(20px,6vw,40px) 60px}
+  .slide .pic{height:min(38svh,320px)}
+  .slide ul{grid-template-columns:1fr 1fr}
+  .spec-grid{grid-template-columns:1fr 1fr}
+  .spec-grid div:nth-child(2){border-right:none}
+  .spec-grid div:nth-child(-n+2){border-bottom:1px solid rgba(201,164,76,.12)}
+  .viewport{height:min(48svh,400px)}
+  #threshold{height:180svh}
+  #panorama{height:300svh}
+}
+@media (max-width:560px){
+  .hero-sub{letter-spacing:.22em;font-size:11px}
+  .slide ul{grid-template-columns:1fr}
+  .pane figcaption{font-size:9.5px;padding:12px 13px}
+  .pan-arrows button{width:52px;height:52px}
+  footer{justify-content:center;text-align:center}
+}
+@media (prefers-reduced-motion: reduce){
+  .scroll-cue .bar{animation:none}
+  .pane img,.slide .pic img,.th-inner img{transform:none !important}
+}
+
+.hdr-r{display:flex;align-items:center;gap:10px}
+.lng{display:flex;border:1px solid rgba(201,164,76,.4);border-radius:100px;overflow:hidden;flex:none}
+.lng button{min-width:38px;min-height:34px;padding:0 9px;border:0;cursor:pointer;
+  background:transparent;color:rgba(232,217,188,.6);
+  font:600 10.5px/1 Manrope,system-ui,sans-serif;letter-spacing:.08em;
+  transition:background .25s,color .25s;-webkit-tap-highlight-color:transparent}
+.lng button.on{background:var(--gold);color:#0B0908}
+@media(hover:hover){.lng button:not(.on):hover{color:var(--goldlt)}}
+@media(max-width:560px){
+  .hdr-r{gap:7px}
+  .lng button{min-width:34px;padding:0 7px;font-size:10px}
+  .topbar a.cta{padding:11px 15px;font-size:9.5px;letter-spacing:.1em}
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":["EventVenue","Restaurant"],
+  "@id":"https://gaukhartas.com/big/#venue",
+  "name":"Гаухартас — большой зал",
+  "description":"Большой банкетный зал в Астане до 300 гостей: сцена с LED-экраном, хрустальные люстры, танцпол по центру.",
+  "url":"https://gaukhartas.com/big/",
+  "image":"https://gaukhartas.com/big/assets/bh-hall-wide-1700.webp",
+  "telephone":"+77760077725",
+  "maximumAttendeeCapacity":300,
+  "isAccessibleForFree":false,
+  "currenciesAccepted":"KZT",
+  "acceptsReservations":true,
+  "address":{"@type":"PostalAddress","streetAddress":"ул. Ермека Серкебаева, 11",
+    "addressLocality":"Астана","addressCountry":"KZ"},
+  "geo":{"@type":"GeoCoordinates","latitude":51.167786,"longitude":71.388918},
+  "parentOrganization":{"@type":"Organization","name":"Гаухартас","url":"https://gaukhartas.com/"},
+  "openingHoursSpecification":{"@type":"OpeningHoursSpecification",
+    "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens":"11:00","closes":"21:00"}
+}
+</script>
+</head>
+<body class="loading">
+
+<!-- ПРЕЛОАДЕР -->
+<div id="pre">
+  <div class="mark">ГАУХАРТАС</div>
+  <div class="track"><div class="fill" id="preFill"></div></div>
+  <div class="pct" id="prePct">0%</div>
+</div>
+
+<!-- ШАПКА -->
+<header class="topbar" id="topbar">
+  <a href="#exterior" class="serif" style="font-size:15px;letter-spacing:.26em;color:var(--champ)">ГАУХАРТАС</a>
+  <div class="hdr-r">
+    <div class="lng" id="lng" role="group" aria-label="Язык / Тіл">
+      <button type="button" data-l="ru" class="on">РУ</button>
+      <button type="button" data-l="kz">ҚЗ</button>
+    </div>
+    <a href="#cta" class="cta" data-i18n="cta">Забронировать дату</a>
+  </div>
+</header>
+
+<!-- ══ 1. ФАСАД ══ -->
+<section id="exterior">
+  <div class="shot" id="extShot">
+    <img src="assets/exterior-1080.webp"
+         srcset="assets/exterior-640.webp 640w, assets/exterior-1080.webp 1080w, assets/exterior-1700.webp 1700w"
+         sizes="100vw" alt="Здание банкетного комплекса «Гаухартас» вечером" fetchpriority="high" width="1080" height="1620">
+  </div>
+  <div class="veil"></div>
+
+  <div class="hero-wrap">
+    <div class="eyebrow reveal" id="heroEyebrow" data-i18n="addr">Астана · Ермека Серкебаева, 11</div>
+    <h1 class="hero-ttl" id="heroTitle" aria-label="Большой зал" data-i18n="hero.title">Большой зал</h1>
+    <div class="hero-sub reveal" id="heroSub" data-i18n="hero.sub">Большой той · до 300 гостей</div>
+  </div>
+
+  <div class="scroll-cue" id="cue"><span data-i18n="cue">Войти</span><div class="bar"></div></div>
+</section>
+
+<!-- ══ 2. ПОРОГ ══ -->
+<section id="threshold">
+  <div class="th-stage">
+    <div class="th-inner">
+      <img id="thImg" src="assets/bh-hall-wide-1080.webp"
+           srcset="assets/bh-hall-wide-640.webp 640w, assets/bh-hall-wide-1080.webp 1080w, assets/bh-hall-wide-1700.webp 1700w"
+           sizes="100vw" alt="Большой зал: сцена с LED-экраном, хрустальные люстры и танцпол по центру" width="1080" height="720">
+    </div>
+    <div class="door l" id="doorL"></div>
+    <div class="door r" id="doorR"></div>
+
+    <div class="th-cap" id="thCap">
+      <h2 class="serif" data-i18n="hero.h2">Зал, который<br>держит триста гостей</h2>
+      <p data-i18n="hero.lead">Хрустальные люстры, зеркальный мраморный пол и центральный проход
+         к сцене. Свет, экран и звук уже в зале — ничего не завозится отдельно.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 3. 360° ПАНОРАМА ══ -->
+<section id="panorama">
+  <div class="pan-stage">
+    <div class="pan-head">
+      <div class="eyebrow" data-i18n="pan.meta">Обзор зала</div>
+      <h2 class="serif" data-i18n="pan.title">Осмотритесь вокруг</h2>
+    </div>
+
+    <div class="viewport" id="viewport" role="region" aria-label="Панорамный обзор большого зала. Тяните, чтобы вращать.">
+      <div class="cylinder" id="cylinder"></div>
+    </div>
+
+    <div class="pan-ui">
+      <div class="compass"><i id="compassDot" style="left:0%"></i></div>
+      <div class="pan-hint" data-i18n="pan.hintfull"><b data-i18n="pan.drag">Тяните</b> · или листайте страницу</div>
+      <div class="pan-arrows">
+        <button type="button" id="panPrev" aria-label="Предыдущий ракурс">‹</button>
+        <button type="button" id="panNext" aria-label="Следующий ракурс">›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4. ГОРИЗОНТАЛЬНЫЕ СЛАЙДЫ ══ -->
+<section id="details">
+  <div class="h-stage">
+    <div class="h-track" id="hTrack">
+
+      <article class="slide">
+        <div class="pic"><img loading="lazy" src="assets/bh-stage-dark-1080.webp"
+             srcset="assets/bh-stage-dark-640.webp 640w, assets/bh-stage-dark-1080.webp 1080w, assets/bh-stage-dark-1700.webp 1700w"
+             sizes="(max-width:900px) 92vw, 46vw" alt="Сцена большого зала: президиум с золотыми креслами и цветочной аркой" width="1080" height="720"></div>
+        <div class="txt">
+          <div class="num serif">01</div>
+          <div class="eyebrow" data-i18n="s1.meta">Сцена</div>
+          <h3 data-i18n="s1.h">Президиум<br>на виду у всего зала</h3>
+          <p data-i18n="s1.p">Сцена по центру дальней стены: за ней LED-экран во всю ширину, перед ней — проход, по которому выходят молодые. Видно с любого стола.</p>
+          <ul>
+            <li data-i18n="s1.l1">LED-экран под оформление и видео</li>
+            <li data-i18n="s1.l2">Профессиональный свет и звук</li>
+            <li data-i18n="s1.l3">Место для ведущего и артистов</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="slide">
+        <div class="pic"><img loading="lazy" src="assets/bh-thrones-1080.webp"
+             srcset="assets/bh-thrones-640.webp 640w, assets/bh-thrones-1080.webp 1080w, assets/bh-thrones-1700.webp 1700w"
+             sizes="(max-width:900px) 92vw, 46vw" alt="Золочёные кресла для молодых у президиума большого зала" width="1080" height="720"></div>
+        <div class="txt">
+          <div class="num serif">02</div>
+          <div class="eyebrow" data-i18n="s2.meta">Убранство</div>
+          <h3 data-i18n="s2.h">Золото, хрусталь<br>и глянцевый мрамор</h3>
+          <p data-i18n="s2.p">Кресла для молодых, хрустальные люстры по всей длине зала и зеркальный пол, в котором отражается свет. Оформление входит в подготовку зала.</p>
+          <ul>
+            <li data-i18n="s2.l1">Кресла и президиум для молодых</li>
+            <li data-i18n="s2.l2">Хрустальные люстры и световые приборы</li>
+            <li data-i18n="s2.l3">Цветочное оформление под палитру тоя</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="slide">
+        <div class="pic"><img loading="lazy" src="assets/bh-dastarkhan-1080.webp"
+             srcset="assets/bh-dastarkhan-640.webp 640w, assets/bh-dastarkhan-1080.webp 1080w, assets/bh-dastarkhan-1700.webp 1700w"
+             sizes="(max-width:900px) 92vw, 46vw" alt="Казахский дастархан: национальная посуда, пиалы и сладости на столе с орнаментом" width="1080" height="720"></div>
+        <div class="txt">
+          <div class="num serif">03</div>
+          <div class="eyebrow" data-i18n="s3.meta">Дастархан</div>
+          <h3 data-i18n="s3.h">Казахский стол<br>своей кухни</h3>
+          <p data-i18n="s3.p">Национальная подача на отдельном столе: баурсаки, курт, шелпек, сладости. Готовится здесь же — кухня своя, не привозная.</p>
+          <ul>
+            <li data-i18n="s3.l1">Национальная и европейская подача</li>
+            <li data-i18n="s3.l2">Отдельный стол под дастархан</li>
+            <li data-i18n="s3.l3">Меню собирается под ваш той</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="slide">
+        <div class="pic"><img loading="lazy" src="assets/bh-serve-1080.webp"
+             srcset="assets/bh-serve-640.webp 640w, assets/bh-serve-1080.webp 1080w, assets/bh-serve-1700.webp 1700w"
+             sizes="(max-width:900px) 92vw, 46vw" alt="Сервировка круглого стола: подстановочные тарелки, хрусталь, холодные закуски" width="1080" height="720"></div>
+        <div class="txt">
+          <div class="num serif">04</div>
+          <div class="eyebrow" data-i18n="s4.meta">Стол</div>
+          <h3 data-i18n="s4.h">Сервировка входит<br>в стоимость</h3>
+          <p data-i18n="s4.p">Посуда, текстиль, хрусталь и работа официантов уже в пакете. Смета фиксируется в договоре — к концу вечера цифра не меняется.</p>
+          <ul>
+            <li data-i18n="s4.l1">Подстановочные тарелки и хрусталь</li>
+            <li data-i18n="s4.l2">Текстиль и салфетки в тон оформлению</li>
+            <li data-i18n="s4.l3">Официанты и уборка включены</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ 5. ХАРАКТЕРИСТИКИ ══ -->
+<section id="specs">
+  <div style="max-width:1180px;margin:0 auto">
+    <div class="eyebrow reveal" data-i18n="sp.meta">Коротко</div>
+    <h2 class="serif reveal" style="font-size:clamp(26px,4.4vw,52px);margin:10px 0 0" data-i18n="sp.title">Большой зал в цифрах</h2>
+    <div class="rule" style="margin-top:34px"></div>
+    <div class="spec-grid">
+      <div class="reveal"><b data-i18n="sp.n1">до 300</b><span data-i18n="sp.g">гостей</span></div>
+      <div class="reveal"><b data-i18n="sp.n2">Сцена</b><span data-i18n="sp.led">и LED-экран</span></div>
+      <div class="reveal"><b data-i18n="sp.yes">Есть</b><span data-i18n="sp.floor">танцпол по центру</span></div>
+      <div class="reveal"><b>10:00—02:00</b><span data-i18n="sp.day">ежедневно</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 6. ФИНАЛ ══ -->
+<section id="cta">
+  <div class="bg">
+    <img loading="lazy" src="assets/bh-purple-1080.webp"
+         srcset="assets/bh-purple-640.webp 640w, assets/bh-purple-1080.webp 1080w, assets/bh-purple-1700.webp 1700w"
+         sizes="100vw" alt="" width="1080" height="720">
+  </div>
+  <div class="box">
+    <div class="eyebrow reveal" data-i18n="cta.meta">Просмотр зала</div>
+    <h2 class="serif reveal" data-i18n="cta.h">Приезжайте<br>посмотреть</h2>
+    <p class="reveal" data-i18n="cta.p">Покажем зал, ответим на вопросы и рассчитаем смету при вас.
+       Бесплатно и без обязательств.</p>
+    <div class="btns reveal">
+      <a class="btn btn-p" href="https://wa.me/77760077725" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-s" href="tel:+77760077725">+7 776 007 77 25</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="foot">Гаухартас · Астана, ул. Ермека Серкебаева, 11</span>
+  <span><a href="tel:+77760077725">+7 776 007 77 25</a></span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var REDUCED = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Ракурсы большого зала. Только это помещение и его детали. ── */
+  var VIEWS = [
+    { slug:'bh-hall-wide',     cap:'Зал целиком' },
+    { slug:'bh-hall-marble',   cap:'Мраморный пол и люстры' },
+    { slug:'bh-hall-aisle',    cap:'Центральный проход к сцене' },
+    { slug:'bh-stage',         cap:'Сцена и президиум' },
+    { slug:'bh-stage-2',       cap:'Президиум крупным планом' },
+    { slug:'bh-purple',        cap:'Свет во время тоя' },
+    { slug:'bh-tables',        cap:'Рассадка за круглыми столами' },
+    { slug:'bh-tables-2',      cap:'Столы вдоль танцпола' },
+    { slug:'bh-serve-2',       cap:'Подача холодных закусок' },
+    { slug:'bh-dastarkhan-2',  cap:'Национальные сладости' },
+    { slug:'bh-lobby',         cap:'Лестница в холле' }
+  ];
+
+  /* ═══ ПРЕЛОАДЕР ═══ */
+  function preload(done) {
+    var urls = ['assets/exterior-1080.webp', 'assets/bh-hall-wide-1080.webp']
+      .concat(VIEWS.map(function (v) { return 'assets/' + v.slug + '-640.webp'; }));
+    var total = urls.length, loaded = 0, finished = false;
+    var fill = document.getElementById('preFill'), pct = document.getElementById('prePct');
+
+    function tick() {
+      loaded++;
+      var p = Math.round(loaded / total * 100);
+      fill.style.width = p + '%';
+      pct.textContent = p + '%';
+      if (loaded >= total && !finished) { finished = true; setTimeout(done, 260); }
+    }
+    urls.forEach(function (u) {
+      var i = new Image();
+      i.onload = i.onerror = tick;
+      i.src = u;
+    });
+    /* страховка: не держим человека дольше 6 секунд ни при каких условиях */
+    setTimeout(function () { if (!finished) { finished = true; done(); } }, 6000);
+  }
+
+  /* ═══ 3D-ЦИЛИНДР ═══ */
+  var cyl = document.getElementById('cylinder');
+  var viewport = document.getElementById('viewport');
+  var panes = [];
+  var STEP = 360 / VIEWS.length;
+  var rot = 0, vel = 0, dragging = false, lastX = 0, lastT = 0, userHold = 0;
+
+  function buildCylinder() {
+    VIEWS.forEach(function (v, i) {
+      var d = document.createElement('div');
+      d.className = 'pane';
+      d.innerHTML =
+        '<figure><img loading="' + (i < 3 ? 'eager' : 'lazy') + '" ' +
+        'src="assets/' + v.slug + '-640.webp" ' +
+        'srcset="assets/' + v.slug + '-640.webp 640w, assets/' + v.slug + '-1080.webp 1080w" ' +
+        'sizes="(max-width:900px) 46vw, 31vw" ' +
+        'alt="' + v.cap + '" width="640" height="427">' +
+        '<figcaption>' + v.cap + '</figcaption></figure>';
+      cyl.appendChild(d);
+      panes.push(d);
+    });
+    layout();
+  }
+
+  /* Радиус считаем от реальной ширины панели, иначе на узких экранах
+     соседние грани наезжают друг на друга. */
+  function layout() {
+    if (!panes.length) return;
+    var pw = panes[0].getBoundingClientRect().width || 300;
+    var r = Math.round((pw / 2) / Math.tan(Math.PI / VIEWS.length) * 1.08);
+    document.documentElement.style.setProperty('--pan-r', r + 'px');
+    panes.forEach(function (p, i) {
+      p.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + r + 'px)';
+    });
+  }
+
+  function paintCylinder() {
+    cyl.style.transform = 'translateZ(calc(var(--pan-r) * -1)) rotateY(' + rot + 'deg)';
+    /* подсвечиваем грань, повёрнутую к зрителю */
+    var norm = ((-rot % 360) + 360) % 360;
+    var active = Math.round(norm / STEP) % VIEWS.length;
+    panes.forEach(function (p, i) { p.classList.toggle('focus', i === active); });
+    var dot = document.getElementById('compassDot');
+    if (dot) dot.style.left = (norm / 360 * 100).toFixed(2) + '%';
+  }
+
+  function loop() {
+    if (!dragging) {
+      if (userHold > 0) { userHold -= 16; }
+      else if (Math.abs(vel) > 0.02) { rot += vel; vel *= 0.94; }
+      else if (!REDUCED) { rot += 0.045; }   /* медленный автообзор */
+      else { requestAnimationFrame(loop); return; }
+      paintCylinder();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function onDown(e) {
+    dragging = true; viewport.classList.add('grabbing');
+    lastX = (e.touches ? e.touches[0].clientX : e.clientX);
+    lastT = Date.now(); vel = 0;
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var dx = x - lastX, dt = Math.max(1, Date.now() - lastT);
+    rot += dx * 0.28;
+    vel = (dx * 0.28) / dt * 12;
+    lastX = x; lastT = Date.now();
+    paintCylinder();
+    if (e.cancelable && e.touches) e.preventDefault();
+  }
+  function onUp() {
+    if (!dragging) return;
+    dragging = false; viewport.classList.remove('grabbing');
+    userHold = 2600;                       /* пауза автовращения после жеста */
+  }
+
+  function step(dir) {
+    /* Считаем от текущего угла, а не от нормализованного индекса.
+       Раньше при переходе через ноль indx пересчитывался с другой стороны
+       круга, и цилиндр прокручивался почти на полный оборот вместо
+       одного шага — со стороны выглядело как «назад не листается». */
+    rot = (Math.round(rot / STEP) - dir) * STEP;
+    vel = 0; userHold = 3200;
+    paintCylinder();
+  }
+
+  /* ═══ ЗАПУСК ═══ */
+  var started = false;
+  function start() {
+    if (started) return;          /* страховка от двойного запуска */
+    started = true;
+    document.body.classList.remove('loading');
+    var pre = document.getElementById('pre');
+
+    buildCylinder();
+    paintCylinder();
+    requestAnimationFrame(loop);
+
+    viewport.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+    viewport.addEventListener('touchstart', onDown, { passive: true });
+    viewport.addEventListener('touchmove', onMove, { passive: false });
+    viewport.addEventListener('touchend', onUp);
+    document.getElementById('panPrev').addEventListener('click', function () { step(-1); });
+    document.getElementById('panNext').addEventListener('click', function () { step(1); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    });
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { layout(); paintCylinder(); if (window.ScrollTrigger) ScrollTrigger.refresh(); }, 180);
+    });
+
+    /* GSAP не догрузился (нет сети, блокировщик, корпоративный прокси) —
+       страница обязана остаться рабочей: панорама уже собрана выше. */
+    if (!window.gsap) {
+      if (pre) pre.remove();
+      document.getElementById('topbar').classList.add('on');
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        el.style.opacity = 1; el.style.transform = 'none';
+      });
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* уход прелоадера */
+    if (pre) gsap.to(pre, { opacity: 0, duration: .7, ease: 'power2.inOut',
+      onComplete: function () { if (pre.parentNode) pre.remove(); } });
+
+    /* ── Вступление: заголовок собирается по буквам ── */
+    var t = document.getElementById('heroTitle');
+    var words = t.textContent.trim().split(' ');
+    t.textContent = '';
+    words.forEach(function (w, wi) {
+      var span = document.createElement('span');
+      span.style.display = 'inline-block';
+      span.style.whiteSpace = 'nowrap';
+      w.split('').forEach(function (c) {
+        var s = document.createElement('span');
+        s.className = 'ch'; s.textContent = c;
+        span.appendChild(s);
+      });
+      t.appendChild(span);
+      if (wi < words.length - 1) t.appendChild(document.createTextNode(' '));
+    });
+
+    var intro = gsap.timeline({ delay: .15 });
+    if (REDUCED) {
+      intro.set('.ch, #heroEyebrow, #heroSub, #cue', { opacity: 1, y: 0 });
+    } else {
+      intro.from('.ch', { yPercent: 118, opacity: 0, duration: 1.05,
+                          ease: 'expo.out', stagger: 0.032 })
+           .to('#heroEyebrow', { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, '-=.7')
+           .to('#heroSub',     { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, '-=.6')
+           .to('#cue',         { opacity: 1, duration: .6 }, '-=.4')
+           .to('#topbar',      { opacity: 1, duration: .6,
+                                 onStart: function () { document.getElementById('topbar').classList.add('on'); } }, '-=.4');
+    }
+    document.getElementById('topbar').classList.add('on');
+
+    if (REDUCED) return;   /* дальше — только скролл-анимации */
+
+    /* ── Фасад: медленный наезд + параллакс ── */
+    gsap.to('#extShot', {
+      scale: 1.18, yPercent: 6, ease: 'none',
+      scrollTrigger: { trigger: '#exterior', start: 'top top', end: 'bottom top', scrub: .6 }
+    });
+    gsap.to('.hero-wrap', {
+      yPercent: -18, opacity: 0, ease: 'none',
+      scrollTrigger: { trigger: '#exterior', start: 'top top', end: '70% top', scrub: .6 }
+    });
+    gsap.to('#cue', {
+      opacity: 0, ease: 'none',
+      scrollTrigger: { trigger: '#exterior', start: 'top top', end: '18% top', scrub: true }
+    });
+
+    /* ── Порог: створки расходятся, интерьер выезжает навстречу ── */
+    var th = gsap.timeline({
+      scrollTrigger: { trigger: '#threshold', start: 'top top', end: 'bottom bottom', scrub: .7 }
+    });
+    th.to('#doorL', { xPercent: -102, ease: 'power2.inOut' }, 0)
+      .to('#doorR', { xPercent: 102, ease: 'power2.inOut' }, 0)
+      .fromTo('#thImg', { scale: 1.28 }, { scale: 1, ease: 'none' }, 0)
+      .fromTo('#thCap', { y: 46, opacity: 0 }, { y: 0, opacity: 1, ease: 'power2.out' }, .35);
+
+    /* ── Панорама: скролл тоже крутит цилиндр ── */
+    ScrollTrigger.create({
+      trigger: '#panorama', start: 'top top', end: 'bottom bottom', scrub: 1,
+      onUpdate: function (self) {
+        if (dragging || userHold > 0) return;
+        rot = -self.progress * 360;
+        paintCylinder();
+      }
+    });
+    gsap.from('.pan-head', {
+      y: 26, opacity: 0, duration: .9, ease: 'power2.out',
+      scrollTrigger: { trigger: '#panorama', start: 'top 72%' }
+    });
+
+    /* ── Горизонтальные слайды ── */
+    var track = document.getElementById('hTrack');
+    var slides = track.querySelectorAll('.slide');
+    var wrap = document.getElementById('details');
+    wrap.style.height = (slides.length * 100) + 'svh';
+
+    var hx = gsap.to(track, {
+      x: function () { return -(track.scrollWidth - window.innerWidth); },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#details', start: 'top top',
+        end: function () { return '+=' + (track.scrollWidth - window.innerWidth); },
+        scrub: .7, invalidateOnRefresh: true
+      }
+    });
+    slides.forEach(function (s) {
+      gsap.fromTo(s.querySelector('.pic img'),
+        { scale: 1.16 }, {
+          scale: 1, ease: 'none',
+          scrollTrigger: { trigger: s, containerAnimation: hx, start: 'left right', end: 'right left', scrub: true }
+        });
+      gsap.from(s.querySelector('.txt'), {
+        y: 40, opacity: 0, duration: .8, ease: 'power2.out',
+        scrollTrigger: { trigger: s, containerAnimation: hx, start: 'left 62%' }
+      });
+    });
+
+    /* ── Появление блоков ── */
+    gsap.utils.toArray('.reveal').forEach(function (el) {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: .85, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%' }
+      });
+    });
+
+    /* ── Сигнатура: блик люстры бежит по золотым линиям вместе со скроллом ── */
+    ScrollTrigger.create({
+      trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: .4,
+      onUpdate: function (self) {
+        document.documentElement.style.setProperty('--sweep', self.progress.toFixed(4));
+      }
+    });
+
+    /* фон финала — лёгкий параллакс */
+    gsap.to('#cta .bg img', {
+      yPercent: 12, ease: 'none',
+      scrollTrigger: { trigger: '#cta', start: 'top bottom', end: 'bottom top', scrub: .8 }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { preload(start); });
+  } else {
+    preload(start);
+  }
+})();
+</script>
+
+<script>
+/* ═══ ЯЗЫК ═══
+   Страница отдельная, lang.js с главной сюда не тянем: он завязан
+   на движок и данные, которых здесь нет. Словарь лежит рядом. */
+(function () {
+  var KZ = {
+  "cta": "Күнді брондау",
+  "addr": "Астана · Ермек Серкебаев к-сі, 11",
+  "hero.sub": "Үлкен той · 300 қонаққа дейін",
+  "cue": "Кіру",
+  "pan.meta": "Залды шолу",
+  "pan.title": "Айналаңызға қараңыз",
+  "s1.meta": "Сахна",
+  "s1.l1": "Безендіру мен бейнеге арналған LED-экран",
+  "s1.l2": "Кәсіби жарық пен дыбыс",
+  "s1.l3": "Жүргізуші мен әртістерге орын",
+  "s2.meta": "Безендіру",
+  "s2.l1": "Жас жұбайларға кресло мен президиум",
+  "s2.l2": "Хрусталь люстралар мен жарық аспаптары",
+  "s2.l3": "Той түсіне сай гүл безендіру",
+  "s3.meta": "Дастархан",
+  "s3.l1": "Ұлттық және еуропалық ұсыну",
+  "s3.l2": "Дастарханға бөлек үстел",
+  "s3.l3": "Мәзір тойыңызға қарай жиналады",
+  "s4.meta": "Үстел",
+  "s4.l1": "Қоятын тәрелкелер мен хрусталь",
+  "s4.l2": "Безендіруге сай мата мен майлықтар",
+  "s4.l3": "Даяшылар мен тазалау кіреді",
+  "sp.meta": "Қысқаша",
+  "sp.title": "Үлкен зал сандармен",
+  "sp.g": "қонақ",
+  "sp.led": "және LED-экран",
+  "sp.yes": "Бар",
+  "sp.floor": "ортада би алаңы",
+  "sp.day": "күн сайын",
+  "cta.meta": "Залды көру",
+  "hero.lead": "Хрусталь люстралар, айналы мәрмәр еден және сахнаға апаратын орталық өткел. Мұнда жарық жүздеген адамға арналған кештің бөлігі ретінде жұмыс істейді.",
+  "s1.p": "Сахна қарсы қабырғаның ортасында: артында бүкіл ені бойынша LED-экран, алдында жас жұбайлар шығатын өткел.",
+  "s2.p": "Жас жұбайларға арналған кресло, зал бойындағы хрусталь люстралар және шамдарды шағылыстыратын айналы еден.",
+  "s3.p": "Бөлек үстелде ұлттық ұсыну: бауырсақ, құрт, шелпек, тәттілер. Барлығы осында, өз асханамызда дайындалады.",
+  "s4.p": "Ыдыс, мата, хрусталь және даяшылардың жұмысы пакетке кіреді. Смета шартта тіркеледі: кеш соңында сан өзгермейді.",
+  "cta.p": "Залды көрсетеміз, сұрақтарға жауап береміз және сметаны сіздің көзіңізше есептейміз. Тегін және міндеттемесіз.",
+  "hero.title": "Үлкен зал",
+  "sp.n1": "300-ге дейін",
+  "foot": "Гаухартас · Астана, Ермек Серкебаев к-сі, 11",
+  "sp.n2": "Сахна",
+  "hero.h2": "Үш жүз қонақты<br>сыйдыратын зал",
+  "s1.h": "Бүкіл залға<br>көрінетін президиум",
+  "s2.h": "Алтын, хрусталь<br>және жылтыр мәрмәр",
+  "s3.h": "Өз асханамыздың<br>қазақы дастарханы",
+  "s4.h": "Дастархан жаю<br>бағаға кіреді",
+  "cta.h": "Келіп<br>көріңіз",
+  "pan.hintfull": "<b>Тартыңыз</b> · немесе бетті айналдырыңыз"
+};
+  var RU = {};
+  var nodes = document.querySelectorAll('[data-i18n]');
+  Array.prototype.forEach.call(nodes, function (n) {
+    RU[n.getAttribute('data-i18n')] = n.innerHTML;   /* запоминаем оригинал */
+  });
+
+  function apply(lang) {
+    var dict = lang === 'kz' ? KZ : RU;
+    Array.prototype.forEach.call(nodes, function (n) {
+      var k = n.getAttribute('data-i18n');
+      if (dict[k] != null) n.innerHTML = dict[k];
+      else if (lang === 'kz' && RU[k] != null) n.innerHTML = RU[k];  /* нет перевода — русский */
+    });
+    document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
+    Array.prototype.forEach.call(document.querySelectorAll('#lng button'), function (b) {
+      b.classList.toggle('on', b.dataset.l === lang);
+    });
+    try { localStorage.setItem('gh_lang', lang); } catch (e) {}
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('#lng button'), function (b) {
+    b.addEventListener('click', function () { apply(b.dataset.l); });
+  });
+
+  /* Язык берём из адреса, потом из памяти. Так ссылку ?lang=kz
+     можно давать в рекламе на казахском. */
+  var q = '';
+  try { q = new URLSearchParams(location.search).get('lang') || ''; } catch (e) {}
+  var saved = '';
+  try { saved = localStorage.getItem('gh_lang') || ''; } catch (e) {}
+  var start = (q === 'kz' || q === 'ru') ? q : (saved === 'kz' ? 'kz' : 'ru');
+  if (start === 'kz') apply('kz');
+})();
+</script>
+</body>
+</html>

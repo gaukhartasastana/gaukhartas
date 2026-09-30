@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>Гаухартас — брони</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0A08">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Брони">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0A08; --card:#15120E; --card2:#1D1812; --line:rgba(201,164,76,.16);
+  --gold:#C9A44C; --gold-l:#E6C87F; --cream:#F5EFE3; --dim:rgba(245,239,227,.5);
+  --big:#C9A44C;        /* большой зал */
+  --small:#5FA8A0;      /* малый зал  */
+  --ok:#4FA96A; --warn:#D2933C; --bad:#C2564B;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg);color:var(--cream);
+  font:15px/1.45 Manrope,system-ui,-apple-system,sans-serif;
+  overscroll-behavior-y:none;
+  padding-bottom:var(--safe-b);
+}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{font-size:16px}   /* меньше 16px — iOS зумит форму */
+a{color:var(--gold-l);text-decoration:none}
+.hide{display:none !important}
+
+/* ── ВХОД ── */
+#gate{position:fixed;inset:0;z-index:100;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px}
+#gate img{width:70px;height:70px;border-radius:50%;border:1px solid var(--line)}
+#gate h1{font-size:17px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-l);margin:4px 0 0;font-weight:600}
+#gate .sub{font-size:13px;color:var(--dim);margin-bottom:6px}
+#pin{width:min(280px,80vw);text-align:center;letter-spacing:.34em;
+  padding:15px;border-radius:12px;border:1px solid var(--line);background:var(--card);min-height:52px}
+#gate button{width:min(280px,80vw);min-height:52px;border-radius:12px;border:0;
+  background:var(--gold);color:#0B0A08;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px}
+#gerr{color:var(--bad);font-size:13px;min-height:18px;text-align:center;max-width:300px}
+
+/* ── ШАПКА ── */
+header{position:sticky;top:0;z-index:20;background:rgba(11,10,8,.94);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mon{font-size:17px;font-weight:700;text-transform:capitalize}
+.nav{display:flex;gap:6px}
+.nav button,.icobtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);
+  background:var(--card);color:var(--gold-l);font-size:17px;display:grid;place-items:center}
+.tabs{display:flex;gap:6px;margin-top:10px}
+.tabs button{flex:1;min-height:38px;border-radius:9px;border:1px solid var(--line);
+  background:transparent;color:var(--dim);font-size:12.5px;font-weight:600}
+.tabs button.on{background:var(--gold);border-color:var(--gold);color:#0B0A08}
+
+main{padding:14px 14px 96px;max-width:640px;margin:0 auto}
+
+/* ── КАЛЕНДАРЬ ── */
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:6px}
+.dow span{text-align:center;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.day{position:relative;aspect-ratio:1;border-radius:10px;border:1px solid var(--line);
+  background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:2px;cursor:pointer;transition:background .15s}
+.day.out{opacity:.28}
+.day.today{border-color:var(--gold-l);box-shadow:0 0 0 1px var(--gold-l) inset}
+.day b{font-size:14.5px;font-weight:600;line-height:1}
+.day .dots{display:flex;gap:3px;height:6px;align-items:center}
+.day .dots i{width:6px;height:6px;border-radius:50%;display:block}
+.day .dots i.b{background:var(--big)}
+.day .dots i.s{background:var(--small)}
+.day.full{background:var(--card2)}
+.legend{display:flex;gap:16px;justify-content:center;margin:16px 0 6px;font-size:12px;color:var(--dim);flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:50%}
+
+/* ── ИТОГИ МЕСЯЦА ── */
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.sum div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center}
+.sum b{display:block;font-size:17px;color:var(--gold-l);line-height:1.2}
+.sum span{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+
+/* ── СПИСОК ── */
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card .dt{font-size:12.5px;color:var(--dim)}
+.card .nm{font-size:16px;font-weight:700;margin-top:2px}
+.tag{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:100px;font-weight:700;white-space:nowrap}
+.tag.big{background:rgba(201,164,76,.16);color:var(--gold-l)}
+.tag.small{background:rgba(95,168,160,.16);color:var(--small)}
+.st{font-size:10.5px;padding:3px 8px;border-radius:100px;font-weight:600;letter-spacing:.05em}
+.st.hold{background:rgba(210,147,60,.16);color:var(--warn)}
+.st.confirmed{background:rgba(79,169,106,.16);color:var(--ok)}
+.st.done{background:rgba(245,239,227,.1);color:var(--dim)}
+.st.cancelled{background:rgba(194,86,75,.16);color:var(--bad)}
+.src{font-size:10px;letter-spacing:.06em;padding:3px 8px;border-radius:100px;
+  background:rgba(95,168,160,.14);color:var(--small);font-weight:600;white-space:nowrap}
+.meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--dim)}
+.meta b{color:var(--cream);font-weight:600}
+.bar{height:5px;border-radius:100px;background:rgba(245,239,227,.09);margin-top:11px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--warn),var(--ok));border-radius:100px}
+.paidrow{display:flex;justify-content:space-between;font-size:12px;margin-top:6px;color:var(--dim)}
+
+/* ── ФОТО ── */
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.shots figure{margin:0;position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--card)}
+.shots img{width:100%;height:100%;object-fit:cover}
+.shots figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;font-size:11px;
+  background:linear-gradient(transparent,rgba(11,10,8,.9))}
+.shots h3{grid-column:1/-1;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);margin:14px 0 0;font-weight:700}
+.shots h3:first-child{margin-top:0}
+
+/* ── КНОПКА ДОБАВИТЬ ── */
+.fab{position:fixed;right:16px;bottom:calc(18px + var(--safe-b));z-index:30;
+  width:58px;height:58px;border-radius:50%;border:0;background:var(--gold);color:#0B0A08;
+  font-size:29px;line-height:1;box-shadow:0 10px 28px rgba(0,0,0,.5)}
+
+/* ── ФОРМА ── */
+#sheet{position:fixed;inset:0;z-index:60;background:rgba(6,5,4,.7);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:flex-end}
+#sheet .panel{width:100%;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:var(--card);border-radius:20px 20px 0 0;border-top:1px solid var(--line);
+  padding:8px 16px calc(26px + var(--safe-b));max-width:640px;margin:0 auto}
+.grab{width:38px;height:4px;border-radius:100px;background:rgba(245,239,227,.2);margin:6px auto 14px}
+.f{display:block;margin-bottom:12px}
+.f span{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.f input,.f select,.f textarea{width:100%;padding:13px;border-radius:11px;
+  border:1px solid var(--line);background:var(--card2);min-height:50px}
+.f textarea{min-height:76px;resize:vertical}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.segs{display:flex;gap:8px}
+.segs button{flex:1;min-height:48px;border-radius:11px;border:1px solid var(--line);
+  background:var(--card2);color:var(--dim);font-weight:600;font-size:13.5px}
+.segs button.on{background:var(--gold);border-color:var(--gold);color:#0B0A08}
+.acts{display:flex;gap:10px;margin-top:16px}
+.acts button{flex:1;min-height:52px;border-radius:12px;border:0;font-weight:700;font-size:13px;
+  letter-spacing:.08em;text-transform:uppercase}
+#save{background:var(--gold);color:#0B0A08}
+#del{background:transparent;border:1px solid rgba(194,86,75,.5);color:var(--bad);flex:0 0 58px}
+#cancel{background:var(--card2);color:var(--dim);flex:0 0 84px}
+#ferr{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+
+.rng{display:flex;gap:8px;margin-bottom:14px}
+.rng button{flex:1;min-height:38px;border-radius:9px;border:1px solid var(--line);
+  background:transparent;color:var(--dim);font-size:12.5px;font-weight:600}
+.rng button.on{background:var(--gold);border-color:var(--gold);color:#0B0A08}
+.warn{background:rgba(210,147,60,.12);border:1px solid rgba(210,147,60,.34);
+  color:var(--warn);border-radius:10px;padding:11px 13px;font-size:12.5px;margin:12px 0;line-height:1.45}
+.chan{margin-top:14px;display:grid;gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px}
+.ch-top{display:flex;justify-content:space-between;align-items:baseline}
+.ch-top b{font-size:15px}
+.ch-top span{font-size:14px;color:var(--gold-l);font-weight:700}
+.ch-bar{height:5px;border-radius:100px;background:rgba(245,239,227,.08);margin:9px 0 8px;overflow:hidden}
+.ch-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--small),var(--gold));border-radius:100px}
+.ch-m{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--dim)}
+.cprep{width:100%;min-height:50px;margin-top:16px;border-radius:12px;border:1px solid var(--line);
+  background:var(--card2);color:var(--gold-l);font-size:12.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase}
+.empty{text-align:center;color:var(--dim);padding:44px 20px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(90px + var(--safe-b));transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--line);border-radius:100px;padding:11px 20px;
+  font-size:13px;z-index:80;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.offline{background:rgba(194,86,75,.14);border:1px solid rgba(194,86,75,.4);color:#E8A49C;
+  border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+@media(prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<!-- ВХОД -->
+<div id="gate">
+  <img src="icon-180.png" alt="">
+  <h1>Гаухартас</h1>
+  <div class="sub">Брони и загрузка залов</div>
+  <input id="pin" type="password" inputmode="numeric" placeholder="PIN" autocomplete="current-password">
+  <button id="gbtn" type="button">Войти</button>
+  <div id="gerr"></div>
+</div>
+
+<!-- ПРИЛОЖЕНИЕ -->
+<div id="app" class="hide">
+  <header>
+    <div class="hrow">
+      <div class="nav"><button id="prev" type="button" aria-label="Предыдущий месяц">‹</button></div>
+      <div class="mon" id="monLabel">—</div>
+      <div class="nav">
+        <button id="next" type="button" aria-label="Следующий месяц">›</button>
+        <button id="today" class="icobtn" type="button" aria-label="Сегодня">•</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button data-tab="cal" class="on" type="button">Календарь</button>
+      <button data-tab="list" type="button">Список</button>
+      <button data-tab="src" type="button">Каналы</button>
+      <button data-tab="shots" type="button">Фото</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="offline" class="offline hide">Нет связи с сервером. Показаны последние сохранённые данные.</div>
+
+    <section id="tab-cal">
+      <div class="dow"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+      <div class="grid" id="grid"></div>
+      <div class="legend">
+        <span><i style="background:var(--big)"></i> Большой зал</span>
+        <span><i style="background:var(--small)"></i> Малый зал</span>
+      </div>
+      <div class="sum">
+        <div><b id="sBook">0</b><span>броней</span></div>
+        <div><b id="sGuests">0</b><span>гостей</span></div>
+        <div><b id="sPaid">0</b><span>внесено ₸</span></div>
+      </div>
+    </section>
+
+    <section id="tab-list" class="hide"></section>
+
+    <section id="tab-src" class="hide"></section>
+
+    <section id="tab-shots" class="hide">
+      <div class="shots" id="shots"></div>
+    </section>
+  </main>
+
+  <button class="fab" id="add" type="button" aria-label="Добавить бронь">+</button>
+</div>
+
+<!-- ФОРМА -->
+<div id="sheet" class="hide">
+  <div class="panel">
+    <div class="grab"></div>
+    <label class="f"><span>Дата</span><input type="date" id="f-date"></label>
+    <div class="f"><span>Зал</span>
+      <div class="segs">
+        <button type="button" data-hall="big" class="on">Большой</button>
+        <button type="button" data-hall="small">Малый</button>
+      </div>
+    </div>
+    <div class="f2">
+      <label class="f"><span>Гостей</span><input type="number" id="f-guests" inputmode="numeric" min="0" step="1" placeholder="0"></label>
+      <label class="f"><span>Повод</span>
+        <select id="f-event">
+          <option value="wedding">Үйлену той</option>
+          <option value="uzatu">Ұзату той</option>
+          <option value="sundet">Сүндет той</option>
+          <option value="jubilee">Мерейтой</option>
+          <option value="tusau">Тұсаукесер</option>
+          <option value="corp">Корпоратив</option>
+          <option value="other">Другое</option>
+        </select>
+      </label>
+    </div>
+    <div class="f2">
+      <label class="f"><span>Смета ₸</span><input type="number" id="f-total" inputmode="numeric" min="0" step="1000" placeholder="0"></label>
+      <label class="f"><span>Внесено ₸</span><input type="number" id="f-paid" inputmode="numeric" min="0" step="1000" placeholder="0"></label>
+    </div>
+    <label class="f"><span>Клиент</span><input id="f-client" placeholder="Имя" autocomplete="off"></label>
+    <label class="f"><span>Телефон</span><input id="f-phone" type="tel" inputmode="tel" placeholder="+7 7__ ___ __ __" autocomplete="off"></label>
+    <label class="f"><span>Откуда пришёл клиент</span>
+      <select id="f-source">
+        <option value="unknown">Не указан</option>
+        <option value="ads">Реклама Google / Яндекс</option>
+        <option value="site">Сайт</option>
+        <option value="instagram">Instagram</option>
+        <option value="2gis">2ГИС</option>
+        <option value="google">Google — поиск и карты</option>
+        <option value="yandex">Яндекс — поиск и карты</option>
+        <option value="referral">Рекомендация знакомых</option>
+        <option value="walkin">Пришли сами / вывеска</option>
+        <option value="repeat">Были у нас раньше</option>
+      </select>
+      <small style="display:block;margin-top:6px;font-size:11.5px;color:var(--dim);line-height:1.4">
+        Если в первом сообщении WhatsApp есть код в скобках — выберите по нему:<br>
+        [GA] [YD] — Реклама · [IG] [IGS] — Instagram · [2G] — 2ГИС<br>
+        [GBP] [GO] — Google · [YA] [YO] — Яндекс · [WEB] [SML] — Сайт · [QR] — визитка
+      </small>
+    </label>
+    <div class="f"><span>Статус</span>
+      <div class="segs" id="f-status">
+        <button type="button" data-st="hold" class="on">Бронь</button>
+        <button type="button" data-st="confirmed">Оплачен</button>
+        <button type="button" data-st="done">Прошёл</button>
+      </div>
+    </div>
+    <label class="f"><span>Заметка</span><textarea id="f-note" placeholder="Пожелания, оформление, контакты"></textarea></label>
+    <div id="ferr"></div>
+    <div class="acts">
+      <button id="cancel" type="button">Отмена</button>
+      <button id="save" type="button">Сохранить</button>
+      <button id="del" type="button" class="hide" aria-label="Удалить">✕</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var PIN = null, DATA = [], editing = null, hall = 'big', status = 'hold';
+  /* Всегда 1-е число: иначе setMonth с 29—31-го перескакивает короткие месяцы */
+  var view = (function () { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), 1); })();
+  function shiftMonth(delta) { view = new Date(view.getFullYear(), view.getMonth() + delta, 1); }
+  var MON = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  var EV = { wedding:'Үйлену той', uzatu:'Ұзату той', sundet:'Сүндет той',
+             jubilee:'Мерейтой', tusau:'Тұсаукесер', corp:'Корпоратив', other:'Другое' };
+  var ST = { hold:'Бронь', confirmed:'Оплачен', done:'Прошёл', cancelled:'Отменён' };
+  var SRC = { site:'Сайт', ads:'Реклама', instagram:'Instagram', '2gis':'2ГИС',
+              google:'Google', yandex:'Яндекс', referral:'Рекомендация',
+              walkin:'Пришли сами', repeat:'Повторный', unknown:'Не указан' };
+  /* Метка из первого сообщения WhatsApp → канал. Менеджеру достаточно
+     увидеть [GA] в переписке и выбрать «Реклама». */
+  var SRC_HINT = { GA:'ads', YD:'ads', IG:'instagram', IGS:'instagram', '2G':'2gis',
+                   GO:'google', GBP:'google', YO:'yandex', YA:'yandex',
+                   WEB:'site', QR:'walkin', SML:'site' };
+
+  /* Ключ хранится в sessionStorage: закрыл вкладку — вход заново.
+     На общем телефоне так безопаснее, чем помнить вечно. */
+  var SS = {
+    get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} },
+    del: function (k) { try { sessionStorage.removeItem(k); } catch (e) {} }
+  };
+  var LS = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('on');
+    clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove('on'); }, 2600);
+  }
+  function money(n) { return (Number(n) || 0).toLocaleString('ru-RU'); }
+  function iso(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') +
+           '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ 'X-Pin': PIN, 'Content-Type': 'application/json' }, opts.headers || {});
+    return fetch('/api/' + path, opts).then(function (r) {
+      if (r.status === 403) { logout('Сессия закрыта, войдите заново'); throw new Error('403'); }
+      if (r.status === 429) throw new Error('Слишком много запросов, подождите минуту');
+      return r.json().then(function (j) {
+        if (!r.ok) throw new Error(j && j.error ? j.error : 'Ошибка ' + r.status);
+        return j;
+      });
+    });
+  }
+
+  /* ═══ ВХОД ═══ */
+  function login() {
+    var pin = String($('pin').value || '').trim();
+    if (!pin) { $('gerr').textContent = 'Введите PIN'; return; }
+    $('gerr').textContent = 'Проверяем…';
+    PIN = pin;
+    api('bookings').then(function (list) {
+      SS.set('gh_pin', pin);
+      DATA = Array.isArray(list) ? list : [];
+      LS.set('gh_bookings_cache', JSON.stringify(DATA));
+      $('gate').classList.add('hide'); $('app').classList.remove('hide');
+      render();
+    }).catch(function (e) {
+      PIN = null;
+      $('gerr').textContent = /403/.test(e.message) ? 'Неверный PIN' :
+        'Сервер недоступен. Проверьте интернет.';
+      $('pin').value = ''; $('pin').focus();
+    });
+  }
+  function logout(msg) {
+    PIN = null; SS.del('gh_pin');
+    $('app').classList.add('hide'); $('gate').classList.remove('hide');
+    $('gerr').textContent = msg || '';
+  }
+  $('gbtn').addEventListener('click', login);
+  $('pin').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
+
+  /* ═══ ЗАГРУЗКА ═══ */
+  function refresh() {
+    return api('bookings').then(function (list) {
+      DATA = Array.isArray(list) ? list : [];
+      LS.set('gh_bookings_cache', JSON.stringify(DATA));
+      $('offline').classList.add('hide');
+      render();
+    }).catch(function () {
+      /* сеть пропала — показываем последнее, что успели сохранить */
+      var c = LS.get('gh_bookings_cache');
+      if (c) { try { DATA = JSON.parse(c) || []; } catch (e) {} }
+      $('offline').classList.remove('hide');
+      render();
+    });
+  }
+
+  /* ═══ КАЛЕНДАРЬ ═══ */
+  function onDate(d) {
+    return DATA.filter(function (b) { return b.date === d && b.status !== 'cancelled'; });
+  }
+  function renderCal() {
+    var y = view.getFullYear(), m = view.getMonth();
+    $('monLabel').textContent = MON[m] + ' ' + y;
+    var first = new Date(y, m, 1);
+    var shift = (first.getDay() + 6) % 7;         /* неделя с понедельника */
+    var start = new Date(y, m, 1 - shift);
+    var todayIso = iso(new Date());
+    var g = $('grid'); g.innerHTML = '';
+
+    for (var i = 0; i < 42; i++) {
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      var key = iso(d), list = onDate(key);
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'day' + (d.getMonth() !== m ? ' out' : '') +
+                     (key === todayIso ? ' today' : '') +
+                     (list.length >= 2 ? ' full' : '');
+      el.setAttribute('aria-label', d.getDate() + ' ' + MON[d.getMonth()] +
+        (list.length ? ', занято: ' + list.length : ', свободно'));
+      var dots = list.map(function (b) {
+        return '<i class="' + (b.hall === 'big' ? 'b' : 's') + '"></i>';
+      }).join('');
+      el.innerHTML = '<b>' + d.getDate() + '</b><span class="dots">' + dots + '</span>';
+      (function (key, list) {
+        el.addEventListener('click', function () {
+          if (list.length === 1) openForm(list[0]);
+          else if (list.length > 1) { showTab('list'); toast(key.split('-').reverse().join('.') + ' — две брони'); }
+          else openForm({ date: key });
+        });
+      })(key, list);
+      g.appendChild(el);
+    }
+
+    var inMonth = DATA.filter(function (b) {
+      return b.status !== 'cancelled' && b.date.slice(0, 7) === iso(new Date(y, m, 1)).slice(0, 7);
+    });
+    $('sBook').textContent = inMonth.length;
+    $('sGuests').textContent = inMonth.reduce(function (a, b) { return a + (+b.guests || 0); }, 0);
+    $('sPaid').textContent = money(inMonth.reduce(function (a, b) { return a + (+b.paid || 0); }, 0));
+  }
+
+  /* ═══ СПИСОК ═══ */
+  function renderList() {
+    var box = $('tab-list');
+    var items = DATA.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var todayIso = iso(new Date());
+    var future = items.filter(function (b) { return b.date >= todayIso; });
+    var past = items.filter(function (b) { return b.date < todayIso; }).reverse();
+    if (!items.length) { box.innerHTML = '<div class="empty">Броней пока нет.<br>Нажмите + чтобы добавить.</div>'; return; }
+
+    function card(b) {
+      var pct = b.total > 0 ? Math.min(100, Math.round(b.paid / b.total * 100)) : 0;
+      var dd = b.date.split('-');
+      return '<div class="card" data-id="' + b.id + '">' +
+        '<div class="top"><div>' +
+          '<div class="dt">' + dd[2] + '.' + dd[1] + '.' + dd[0] + ' · ' + (EV[b.event] || '—') + '</div>' +
+          '<div class="nm">' + esc(b.client) + '</div>' +
+        '</div><div style="text-align:right;display:grid;gap:6px;justify-items:end">' +
+          '<span class="tag ' + b.hall + '">' + (b.hall === 'big' ? 'Большой' : 'Малый') + '</span>' +
+          '<span class="st ' + b.status + '">' + (ST[b.status] || '') + '</span>' +
+          (b.source && b.source !== 'unknown'
+            ? '<span class="src">' + esc(SRC[b.source] || b.source) + '</span>' : '') +
+        '</div></div>' +
+        '<div class="meta"><span><b>' + (b.guests || 0) + '</b> гостей</span>' +
+          (b.phone ? '<a href="tel:' + esc(b.phone) + '">' + esc(b.phone) + '</a>' : '') +
+        '</div>' +
+        (b.total > 0 ?
+          '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+          '<div class="paidrow"><span>Внесено <b style="color:var(--cream)">' + money(b.paid) + ' ₸</b></span>' +
+          '<span>из ' + money(b.total) + ' ₸ · ' + pct + '%</span></div>' : '') +
+        (b.note ? '<div class="meta" style="margin-top:8px">' + esc(b.note) + '</div>' : '') +
+        '</div>';
+    }
+    box.innerHTML =
+      (future.length ? '<h3 style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:2px 0 10px">Предстоящие</h3>' + future.map(card).join('') : '') +
+      (past.length ? '<h3 style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:20px 0 10px">Прошедшие</h3>' + past.map(card).join('') : '');
+    Array.prototype.forEach.call(box.querySelectorAll('.card'), function (c) {
+      c.addEventListener('click', function () {
+        var b = DATA.filter(function (x) { return x.id === c.dataset.id; })[0];
+        if (b) openForm(b);
+      });
+    });
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  /* ═══ ФОТО ДЛЯ ПОКАЗА КЛИЕНТУ ═══ */
+  var SHOTS = [
+    ['Вход и здание', [['../assets/ph-big-wide','Большой зал · общий вид'],
+                       ['../assets/ph-small-main','Малый зал · окна и лаунж']]],
+    ['Интерьер',      [['../assets/ph-big-main','Большой зал · сервировка'],
+                       ['../assets/ph-small-lounge','Малый зал · зона отдыха'],
+                       ['../assets/ph-photozone','Фотозона'],
+                       ['../assets/ph-photozone-2','Фотозона · драпировка']]],
+    ['Сервировка',    [['../assets/ph-serve','Подача и посуда'],
+                       ['../assets/ph-serve-2','Детали стола'],
+                       ['../assets/ph-big-tables','Рассадка'],
+                       ['../assets/ph-flowers','Цветы и свечи']]]
+  ];
+  function renderShots() {
+    var h = '';
+    SHOTS.forEach(function (grp) {
+      h += '<h3>' + grp[0] + '</h3>';
+      grp[1].forEach(function (s) {
+        h += '<figure><img loading="lazy" src="' + s[0] + '-640.webp" alt="' + s[1] + '">' +
+             '<figcaption>' + s[1] + '</figcaption></figure>';
+      });
+    });
+    $('shots').innerHTML = h;
+  }
+
+  /* ═══ ОТЧЁТ ПО КАНАЛАМ ═══
+     Считаем не клики, а деньги: сколько броней и на какую сумму принёс
+     каждый источник. Это единственная цифра, которая что-то доказывает. */
+  var srcRange = 90;
+  function renderSources() {
+    var box = $('tab-src');
+    var since = new Date(Date.now() - srcRange * 86400000).toISOString().slice(0, 10);
+    var rows = DATA.filter(function (b) {
+      return b.status !== 'cancelled' && b.date >= since;
+    });
+
+    var by = {};
+    rows.forEach(function (b) {
+      var k = b.source || 'unknown';
+      by[k] = by[k] || { n: 0, guests: 0, total: 0, paid: 0 };
+      by[k].n++;
+      by[k].guests += (+b.guests || 0);
+      by[k].total += (+b.total || 0);
+      by[k].paid += (+b.paid || 0);
+    });
+    var list = Object.keys(by).map(function (k) {
+      return { key: k, name: SRC[k] || k, d: by[k] };
+    }).sort(function (a, b) { return b.d.total - a.d.total; });
+
+    var sumN = rows.length;
+    var sumTotal = rows.reduce(function (a, b) { return a + (+b.total || 0); }, 0);
+    var sumPaid = rows.reduce(function (a, b) { return a + (+b.paid || 0); }, 0);
+    var known = rows.filter(function (b) { return b.source && b.source !== 'unknown'; }).length;
+
+    if (!sumN) {
+      box.innerHTML = '<div class="empty">За выбранный период броней нет.</div>';
+      return;
+    }
+
+    var h = '<div class="rng">' +
+      [30, 90, 365].map(function (d) {
+        return '<button type="button" data-rng="' + d + '"' +
+               (srcRange === d ? ' class="on"' : '') + '>' +
+               (d === 365 ? 'год' : d + ' дней') + '</button>';
+      }).join('') + '</div>';
+
+    h += '<div class="sum"><div><b>' + sumN + '</b><span>броней</span></div>' +
+         '<div><b>' + money(sumTotal) + '</b><span>сумма смет ₸</span></div>' +
+         '<div><b>' + money(sumPaid) + '</b><span>внесено ₸</span></div></div>';
+
+    if (known < sumN) {
+      h += '<div class="warn">У ' + (sumN - known) + ' из ' + sumN +
+           ' броней не указан источник. Пока их много, отчёт неточный.</div>';
+    }
+
+    h += '<div class="chan">';
+    list.forEach(function (x) {
+      var pct = sumTotal > 0 ? Math.round(x.d.total / sumTotal * 100) : 0;
+      var avg = x.d.n ? Math.round(x.d.total / x.d.n) : 0;
+      h += '<div class="ch">' +
+        '<div class="ch-top"><b>' + esc(x.name) + '</b><span>' + pct + '%</span></div>' +
+        '<div class="ch-bar"><i style="width:' + pct + '%"></i></div>' +
+        '<div class="ch-m">' +
+          '<span>' + x.d.n + ' брон.</span>' +
+          '<span>' + money(x.d.total) + ' ₸</span>' +
+          '<span>средний чек ' + money(avg) + '</span>' +
+        '</div></div>';
+    });
+    h += '</div>';
+
+    h += '<button type="button" id="copyRep" class="cprep">Скопировать отчёт для заказчика</button>';
+    box.innerHTML = h;
+
+    Array.prototype.forEach.call(box.querySelectorAll('[data-rng]'), function (b) {
+      b.addEventListener('click', function () { srcRange = +b.dataset.rng; renderSources(); });
+    });
+    $('copyRep').addEventListener('click', function () {
+      var txt = 'Отчёт за ' + srcRange + ' дней\n\n' +
+        'Броней: ' + sumN + '\nСумма смет: ' + money(sumTotal) + ' ₸\n' +
+        'Внесено: ' + money(sumPaid) + ' ₸\n\nПо каналам:\n' +
+        list.map(function (x) {
+          return '· ' + x.name + ' — ' + x.d.n + ' брон., ' + money(x.d.total) + ' ₸';
+        }).join('\n');
+      try {
+        navigator.clipboard.writeText(txt);
+        toast('Отчёт скопирован');
+      } catch (e) { toast('Не удалось скопировать'); }
+    });
+  }
+
+  function render() { renderCal(); renderList(); if (!$('tab-src').classList.contains('hide')) renderSources(); }
+
+  /* ═══ ВКЛАДКИ ═══ */
+  function showTab(name) {
+    ['cal','list','src','shots'].forEach(function (t) {
+      $('tab-' + t).classList.toggle('hide', t !== name);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+      b.classList.toggle('on', b.dataset.tab === name);
+    });
+    if (name === 'shots' && !$('shots').innerHTML) renderShots();
+    if (name === 'src') renderSources();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+    b.addEventListener('click', function () { showTab(b.dataset.tab); });
+  });
+
+  $('prev').addEventListener('click', function () { shiftMonth(-1); renderCal(); });
+  $('next').addEventListener('click', function () { shiftMonth(1); renderCal(); });
+  $('today').addEventListener('click', function () {
+    var n = new Date(); view = new Date(n.getFullYear(), n.getMonth(), 1);
+    renderCal(); showTab('cal');
+  });
+
+  /* ═══ ФОРМА ═══ */
+  function setHall(h) {
+    hall = h;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-hall]'), function (b) {
+      b.classList.toggle('on', b.dataset.hall === h);
+    });
+  }
+  function setStatus(s) {
+    status = s;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-st]'), function (b) {
+      b.classList.toggle('on', b.dataset.st === s);
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-hall]'), function (b) {
+    b.addEventListener('click', function () { setHall(b.dataset.hall); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-st]'), function (b) {
+    b.addEventListener('click', function () { setStatus(b.dataset.st); });
+  });
+
+  function openForm(b) {
+    editing = b && b.id ? b : null;
+    $('f-date').value = (b && b.date) || iso(new Date());
+    $('f-guests').value = (b && b.guests) || '';
+    $('f-total').value = (b && b.total) || '';
+    $('f-paid').value = (b && b.paid) || '';
+    $('f-client').value = (b && b.client) || '';
+    $('f-phone').value = (b && b.phone) || '';
+    $('f-note').value = (b && b.note) || '';
+    $('f-event').value = (b && b.event) || 'wedding';
+    $('f-source').value = (b && b.source) || 'unknown';
+    setHall((b && b.hall) || 'big');
+    setStatus((b && b.status) || 'hold');
+    $('del').classList.toggle('hide', !editing);
+    $('ferr').textContent = '';
+    $('sheet').classList.remove('hide');
+  }
+  function closeForm() { $('sheet').classList.add('hide'); editing = null; }
+  $('cancel').addEventListener('click', closeForm);
+  $('add').addEventListener('click', function () { openForm(null); });
+  $('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeForm(); });
+
+  $('save').addEventListener('click', function () {
+    var body = {
+      id: editing ? editing.id : undefined,
+      date: $('f-date').value,
+      hall: hall,
+      guests: $('f-guests').value,
+      total: $('f-total').value,
+      paid: $('f-paid').value,
+      client: $('f-client').value,
+      phone: $('f-phone').value,
+      event: $('f-event').value,
+      source: $('f-source').value,
+      note: $('f-note').value,
+      status: status
+    };
+    $('ferr').textContent = '';
+    $('save').disabled = true;
+    api('bookings', { method: 'POST', body: JSON.stringify(body) })
+      .then(function () { closeForm(); toast('Сохранено'); return refresh(); })
+      .catch(function (e) { $('ferr').textContent = e.message; })
+      .then(function () { $('save').disabled = false; });
+  });
+
+  $('del').addEventListener('click', function () {
+    if (!editing) return;
+    if (!confirm('Удалить бронь «' + editing.client + '»?')) return;
+    api('bookings/' + encodeURIComponent(editing.id), { method: 'DELETE' })
+      .then(function () { closeForm(); toast('Удалено'); return refresh(); })
+      .catch(function (e) { $('ferr').textContent = e.message; });
+  });
+
+  /* ═══ СТАРТ ═══ */
+  var saved = SS.get('gh_pin');
+  if (saved) { PIN = saved; api('bookings').then(function (list) {
+      DATA = Array.isArray(list) ? list : [];
+      $('gate').classList.add('hide'); $('app').classList.remove('hide'); render();
+    }).catch(function () { logout(); }); }
+
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && PIN) refresh();
+  });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
