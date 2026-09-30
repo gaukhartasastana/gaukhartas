@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Гаухартас — админ-панель</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0F1115;--pn:#161A20;--pn2:#1D222A;--ln:#2A313B;--tx:#EEF1F5;--dm:#98A2B0;--ac:#D8B26A;--ok:#4FBF87;--wr:#E8A25C;--bd:#E4675B}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+input,select,textarea,button{font-family:inherit;font-size:14.5px}
+#gate{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);z-index:50}
+.gb{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:34px;width:min(370px,90vw);text-align:center}
+.gb h1{font-size:20px;margin-bottom:6px}.gb p{color:var(--dm);font-size:13.5px;margin-bottom:18px}
+#pin{text-align:center;letter-spacing:.5em;font-size:22px;margin-bottom:10px}
+#gerr{color:var(--bd);font-size:13px;min-height:19px}
+.top{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.96);border-bottom:1px solid var(--ln);padding:13px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top b{font-size:16px}.sp{flex:1}
+.tabs{display:flex;gap:4px;padding:12px 20px 0;flex-wrap:wrap}
+.tab{background:none;border:1px solid transparent;color:var(--dm);padding:9px 15px;border-radius:100px;cursor:pointer}
+.tab.on{background:var(--pn2);border-color:var(--ln);color:var(--ac)}
+main{padding:20px;max-width:1180px;margin:0 auto}
+.pane{display:none}.pane.on{display:block}
+h2{font-size:19px}h3{font-size:15.5px;margin-bottom:13px;color:var(--ac)}
+.sub{color:var(--dm);font-size:13.5px;margin:4px 0 18px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:20px;margin-bottom:16px}
+.btn{background:var(--ac);color:#14161A;border:none;border-radius:8px;padding:11px 18px;font-weight:600;cursor:pointer}
+.btn.gh{background:none;border:1px solid var(--ln);color:var(--tx)}
+.btn.dg{background:none;border:1px solid var(--bd);color:var(--bd)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+label.f{display:flex;flex-direction:column;gap:6px}
+label.f span{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dm)}
+input,select,textarea{width:100%;padding:11px 12px;background:var(--pn2);border:1px solid var(--ln);border-radius:8px;color:var(--tx)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac)}
+textarea{resize:vertical;line-height:1.5}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:17px}
+.kpi b{display:block;font-size:29px;font-variant-numeric:tabular-nums}
+.kpi span{display:block;color:var(--dm);font-size:12.5px;margin-top:4px}
+.kpi.a b{color:var(--ac)}.kpi.g b{color:var(--ok)}.kpi.w b{color:var(--wr)}
+.chart{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:10px}
+.bar{flex:1;background:linear-gradient(180deg,var(--ac),rgba(216,178,106,.22));border-radius:4px 4px 0 0;min-height:3px;position:relative;transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.bar:hover:after{content:attr(data-t);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--pn2);border:1px solid var(--ln);border-radius:6px;padding:5px 9px;font-size:12px;white-space:nowrap;margin-bottom:6px;z-index:5}
+.xax{display:flex;gap:5px;margin-top:7px}
+.xax span{flex:1;text-align:center;font-size:10.5px;color:var(--dm)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--ln);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dm)}
+tbody tr:hover{background:var(--pn2)}
+.tw{overflow-x:auto}
+.pill{display:inline-block;border:1px solid var(--ln);border-radius:100px;padding:3px 10px;font-size:12px;color:var(--dm)}
+.pill.g{border-color:var(--ok);color:var(--ok)}.pill.w{border-color:var(--wr);color:var(--wr)}
+.hr{height:1px;background:var(--ln);margin:16px 0}
+.dish{display:flex;gap:8px;margin-bottom:7px}.dish input{flex:1}
+.x{background:none;border:1px solid var(--ln);color:var(--dm);border-radius:7px;width:38px;flex:none;cursor:pointer}
+.x:hover{border-color:var(--bd);color:var(--bd)}
+.note{background:rgba(216,178,106,.08);border:1px solid rgba(216,178,106,.3);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#E6D3AB;margin-bottom:16px}
+.mini{height:6px;background:var(--ln);border-radius:6px;margin-top:5px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--ac);transition:width .6s}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,80px);background:var(--ok);color:#0C1410;padding:13px 22px;border-radius:100px;font-weight:600;transition:.35s;z-index:60;opacity:0}
+#toast.on{transform:translate(-50%,0);opacity:1}
+@media(max-width:640px){main{padding:14px}.card{padding:15px}}
+
+.rp-out{margin-top:16px}
+.rp-big{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.rp-k{flex:1 1 150px;background:#161B22;border:1px solid #2A313B;border-radius:10px;padding:14px 16px}
+.rp-k b{display:block;font-size:26px;line-height:1.1;color:#E8B563}
+.rp-k span{display:block;font-size:12px;color:#8B949E;margin-top:5px}
+.rp-note{background:#1A1410;border-left:3px solid #E8B563;padding:12px 14px;border-radius:0 8px 8px 0;
+  font-size:13.5px;line-height:1.55;margin-top:10px;color:#D6D2C8}
+.rp-warn{background:#2A1A1A;border-left-color:#E06C6C;color:#E8C4C4}
+.rp-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.rp-links a{display:block;padding:13px 15px;background:#161B22;border:1px solid #2A313B;
+  border-radius:9px;color:#E8B563;text-decoration:none;font-size:13.5px;transition:.2s}
+.rp-links a:hover{border-color:#E8B563;background:#1B2129}
+.rp-links a small{display:block;color:#8B949E;margin-top:4px;font-size:11.5px;line-height:1.4}
+.rp-step{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #232A33}
+.rp-step:last-child{border-bottom:none}
+.rp-step input{margin-top:3px;width:17px;height:17px;flex:none;accent-color:#E8B563;cursor:pointer}
+.rp-step label{cursor:pointer;font-size:14px;line-height:1.5}
+.rp-step label b{display:block;color:#F0EDE6}
+.rp-step label span{color:#8B949E;font-size:12.5px}
+.rp-step.done label b{text-decoration:line-through;opacity:.5}
+.btn.ghost{background:transparent;border:1px solid #2A313B;color:#C9D1D9}
+
+/* ═══ СТАТИСТИКА ═══ */
+.st-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.st-head h2{margin:0}
+.st-rng{display:flex;gap:6px;flex:none}
+.st-rng button{min-height:38px;padding:0 14px;border-radius:9px;border:1px solid var(--line);
+  background:transparent;color:var(--dim);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  transition:background .2s,color .2s}
+.st-rng button.on{background:var(--gold);border-color:var(--gold);color:#0B0A08}
+
+.st-note{background:rgba(95,168,160,.1);border:1px solid rgba(95,168,160,.3);color:#9FD4CE;
+  border-radius:12px;padding:13px 15px;font-size:13.5px;line-height:1.55;margin-bottom:16px}
+.st-note b{color:#C9EDE8}
+
+/* Плитки: цифра, подпись и объяснение простым языком */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 14px;position:relative}
+.kpi b{display:block;font-size:26px;line-height:1.1;font-weight:700;color:var(--cream)}
+.kpi .lbl{display:block;margin-top:5px;font-size:12px;color:var(--dim);font-weight:600}
+.kpi .exp{display:block;margin-top:7px;font-size:11px;line-height:1.4;color:rgba(245,239,227,.34)}
+.kpi .dlt{position:absolute;top:14px;right:13px;font-size:11.5px;font-weight:700;
+  padding:3px 8px;border-radius:100px;white-space:nowrap}
+.kpi .dlt.up{background:rgba(79,169,106,.16);color:#6FCB8A}
+.kpi .dlt.dn{background:rgba(194,86,75,.16);color:#E08A80}
+.kpi .dlt.eq{background:rgba(245,239,227,.08);color:var(--dim)}
+.kpi.hero b{color:var(--gold-l);font-size:30px}
+.kpi.good b{color:#6FCB8A}
+
+.c-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.c-head h3{margin:0}
+.hint{font-size:11.5px;color:var(--dim)}
+
+/* Воронка */
+.fn{display:grid;gap:9px}
+.fn-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.fn-bar{position:relative;height:38px;border-radius:9px;background:rgba(245,239,227,.05);overflow:hidden}
+.fn-bar i{position:absolute;inset:0 auto 0 0;border-radius:9px;
+  background:linear-gradient(90deg,rgba(95,168,160,.5),rgba(201,164,76,.65))}
+.fn-bar span{position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  font-size:13px;font-weight:600;z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.fn-n{font-size:13px;font-weight:700;min-width:74px;text-align:right}
+.fn-n small{display:block;font-size:11px;font-weight:500;color:var(--dim)}
+.fn-drop{font-size:11.5px;color:var(--dim);padding:0 0 4px 13px}
+
+.chart{display:flex;align-items:flex-end;gap:3px;height:130px}
+.chart .bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--gold),rgba(201,164,76,.3));
+  min-height:3px;position:relative;transition:filter .2s}
+.chart .bar:hover{filter:brightness(1.3)}
+.chart .bar.today{background:linear-gradient(180deg,#6FCB8A,rgba(111,203,138,.3))}
+.btn-rep{width:100%;min-height:54px;margin-top:18px;border-radius:12px;border:1px solid var(--line);
+  background:var(--card);color:var(--gold-l);font:inherit;font-size:13px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn-rep:hover{background:var(--card2)}
+
+@media(max-width:640px){
+  .st-head{align-items:flex-start}
+  .st-rng{width:100%}
+  .st-rng button{flex:1;padding:0}
+  .kpis{grid-template-columns:1fr 1fr;gap:8px}
+  .kpi{padding:13px 11px}
+  .kpi b{font-size:22px}
+  .kpi.hero b{font-size:25px}
+  .kpi .exp{display:none}
+  .kpi .dlt{position:static;display:inline-block;margin-top:6px}
+  .chart{height:100px}
+  .fn-n{min-width:64px;font-size:12px}
+}
+
+.tab{position:relative}
+.badge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;
+  border-radius:100px;background:#C2564B;color:#fff;font-size:11px;font-weight:700;font-style:normal;
+  display:grid;place-items:center;line-height:1}
+.notify-btn{width:100%;min-height:48px;margin-bottom:16px;border-radius:11px;
+  border:1px solid rgba(95,168,160,.4);background:rgba(95,168,160,.08);color:#9FD4CE;
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+.notify-btn:hover{background:rgba(95,168,160,.16)}
+</style>
+</head>
+<body>
+<div id="gate"><div class="gb">
+<h1>Админ-панель «Гаухартас»</h1>
+<p>Введите PIN-код</p>
+<input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off">
+<div id="gerr"></div>
+<button class="btn" style="width:100%" id="gbtn">Войти</button>
+</div></div>
+
+<div class="top">
+<b>Гаухартас · админка</b>
+<span class="pill g" id="tag">Сохранено</span>
+<span class="sp"></span>
+<button class="btn gh" id="open">Открыть сайт</button>
+<button class="btn" id="save">Сохранить</button>
+</div>
+
+<div class="tabs">
+<button class="tab on" data-p="stats">Статистика</button>
+<button class="tab" data-p="leads">Заявки</button>
+<button class="tab" data-p="menu">Меню и цены</button>
+<button class="tab" data-p="halls">Залы</button>
+<button class="tab" data-p="texts">Тексты</button>
+<button class="tab" data-p="cont">Контакты</button>
+<button class="tab" data-p="rep">Репутация</button>
+<button class="tab" data-p="sys">Система</button>
+</div>
+
+<main>
+<section class="pane on" id="p-stats">
+<div class="st-head">
+  <div>
+    <h2>Что происходит на сайте</h2>
+    <p class="sub" id="st-period">Загружаем…</p>
+  </div>
+  <div class="st-rng" id="st-rng">
+    <button type="button" data-d="7">7 дней</button>
+    <button type="button" data-d="30" class="on">30 дней</button>
+    <button type="button" data-d="90">90 дней</button>
+  </div>
+</div>
+
+<div id="st-alert"></div>
+<div class="kpis" id="kpis"></div>
+
+<div class="card">
+  <div class="c-head">
+    <h3>Посещения по дням</h3>
+    <span class="hint" id="ch-legend"></span>
+  </div>
+  <div class="chart" id="chart"></div>
+  <div class="xax" id="xax"></div>
+</div>
+
+<div class="card funnel-card">
+  <div class="c-head"><h3>Путь посетителя</h3>
+    <span class="hint">Сколько человек дошло до каждого шага</span></div>
+  <div id="funnel"></div>
+</div>
+
+<div class="grid">
+  <div class="card"><div class="c-head"><h3>Какое меню смотрят</h3></div><div id="tiers"></div></div>
+  <div class="card"><div class="c-head"><h3>Все события</h3></div><div class="tw"><table id="evt"></table></div></div>
+</div>
+
+<button type="button" class="btn-rep" id="st-report">Скопировать отчёт для заказчика</button>
+
+<div class="card"><h3>Внешняя аналитика</h3>
+<p class="sub" style="margin:0 0 14px">Вставьте ID — события выше пойдут в Google Analytics и Google Ads как конверсии.</p>
+<div class="grid">
+<label class="f"><span>Google Analytics 4</span><input id="ga4" placeholder="G-XXXXXXX"></label>
+<label class="f"><span>Google Ads</span><input id="gads" placeholder="AW-XXXXXXXXX"></label>
+<label class="f"><span>TikTok Pixel</span><input id="ttq" placeholder="C…"></label>
+<label class="f"><span>Meta Pixel</span><input id="fbp" placeholder="1234567890"></label>
+</div></div>
+</section>
+
+<section class="pane" id="p-leads">
+<button type="button" id="notifyBtn" class="notify-btn">Включить уведомления о новых заявках</button>
+<h2>Заявки</h2>
+<p class="sub">Всё, что отправили через форму и калькулятор.</p>
+<div class="row" style="margin-bottom:14px">
+<button class="btn gh" id="csv">Скачать CSV для Excel</button>
+<button class="btn dg" id="clrL">Очистить</button>
+</div>
+<div class="card tw"><table id="lt"></table></div>
+</section>
+
+<section class="pane" id="p-menu">
+<h2>Меню и цены</h2>
+<p class="sub">Правки попадают во все версии сайта, в калькулятор, таблицу сравнения и текст заявки.</p>
+<div id="med"></div>
+</section>
+
+<section class="pane" id="p-halls">
+<h2>Залы и доплаты</h2>
+<p class="sub">Вместимость влияет на калькулятор, цифры на главной и данные для Google.</p>
+<div id="hed"></div>
+</section>
+
+<section class="pane" id="p-texts">
+<h2>Тексты</h2>
+<p class="sub">Первый экран, блок о ресторане и вопросы-ответы.</p>
+<div class="card"><h3>Первый экран</h3><div class="grid">
+<label class="f"><span>Надзаголовок</span><input id="h-k"></label>
+<label class="f"><span>Строка 1</span><input id="h-1"></label>
+<label class="f"><span>Строка 2</span><input id="h-2"></label>
+<label class="f"><span>Строка 3</span><input id="h-3"></label>
+</div><div style="margin-top:14px"><label class="f"><span>Описание</span><textarea id="h-l" rows="3"></textarea></label></div></div>
+<div class="card"><h3>О ресторане</h3>
+<label class="f" style="margin-bottom:12px"><span>Заголовок</span><input id="a-t"></label>
+<label class="f" style="margin-bottom:12px"><span>Абзац 1</span><textarea id="a-1" rows="3"></textarea></label>
+<label class="f" style="margin-bottom:12px"><span>Абзац 2</span><textarea id="a-2" rows="3"></textarea></label>
+<label class="f"><span>Абзац 3</span><textarea id="a-3" rows="3"></textarea></label></div>
+<div class="card"><h3>Вопросы и ответы</h3><div id="fed"></div>
+<button class="btn gh" id="addF" style="margin-top:10px">+ Добавить вопрос</button></div>
+</section>
+
+<section class="pane" id="p-cont">
+<h2>Контакты</h2>
+<p class="sub">Меняются сразу везде: шапка, кнопки WhatsApp, контакты, подвал, микроразметка.</p>
+<div class="card"><div class="grid">
+<label class="f"><span>Телефон основной</span><input id="c-p1"></label>
+<label class="f"><span>Телефон второй</span><input id="c-p2"></label>
+<label class="f"><span>WhatsApp (цифры)</span><input id="c-wa"></label>
+<label class="f"><span>Instagram (без @)</span><input id="c-ig"></label>
+<label class="f"><span>Адрес</span><input id="c-ad"></label>
+<label class="f"><span>Город и район</span><input id="c-ct"></label>
+<label class="f"><span>Часы приёма заявок</span><input id="c-hr"></label>
+<label class="f"><span>Коротко для цифр</span><input id="c-hs"></label>
+<label class="f"><span>Широта</span><input id="c-la"></label>
+<label class="f"><span>Долгота</span><input id="c-lo"></label>
+<label class="f"><span>Ссылка 2ГИС</span><input id="c-2g"></label>
+<label class="f"><span>Домен сайта</span><input id="c-dm"></label>
+</div>
+<div style="margin-top:14px"><label class="f"><span>Ориентир</span><textarea id="c-lm" rows="2"></textarea></label></div>
+</div></section>
+
+
+<section class="pane" id="p-rep">
+<h2>Репутация и рост</h2>
+<p class="sub">Рейтинг на 2ГИС, Google и Яндексе — главный источник заявок для банкетного зала.
+Здесь считается, сколько отзывов нужно собрать, и куда смотреть по цифрам.</p>
+
+<div class="card">
+  <h3>Калькулятор рейтинга</h3>
+  <p class="sub">Подставлены реальные цифры с 2ГИС на 29.07.2026: <b>4.6 · 4532 оценки · 2110 отзывов</b>. Обновляйте, когда меняются.</p>
+  <div class="grid">
+    <label class="f"><span>Площадка</span><select id="rp-site">
+      <option value="2gis">2ГИС</option><option value="google">Google Карты</option>
+      <option value="yandex">Яндекс Карты</option></select></label>
+    <label class="f"><span>Текущий рейтинг</span>
+      <input type="number" id="rp-cur" step="0.1" min="1" max="5" value="4.6"></label>
+    <label class="f"><span>Сколько сейчас отзывов</span>
+      <input type="number" id="rp-n" min="0" step="1" value="4532"></label>
+    <label class="f"><span>Хочу поднять до</span>
+      <input type="number" id="rp-target" step="0.1" min="1" max="5" value="4.7"></label>
+    <label class="f"><span>Реалистичная доля пятёрок, %</span>
+      <input type="number" id="rp-share" min="10" max="100" step="5" value="85"></label>
+    <label class="f"><span>Тоев в месяц</span>
+      <input type="number" id="rp-events" min="1" step="1" value="12"></label>
+  </div>
+  <div id="rp-out" class="rp-out"></div>
+</div>
+
+<div class="card">
+  <h3>Дневник рейтинга</h3>
+  <p class="sub">Записывайте раз в неделю — увидите, растёте или стоите.
+    Хранится в этом браузере.</p>
+  <div class="grid">
+    <label class="f"><span>Дата</span><input type="date" id="rl-date"></label>
+    <label class="f"><span>2ГИС</span><input type="number" step="0.1" id="rl-2gis" placeholder="4.6"></label>
+    <label class="f"><span>Отзывов 2ГИС</span><input type="number" id="rl-2gisn" placeholder="42"></label>
+    <label class="f"><span>Google</span><input type="number" step="0.1" id="rl-google" placeholder="4.8"></label>
+    <label class="f"><span>Отзывов Google</span><input type="number" id="rl-googlen" placeholder="19"></label>
+    <label class="f"><span>Яндекс</span><input type="number" step="0.1" id="rl-yandex" placeholder="4.5"></label>
+  </div>
+  <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn" id="rl-add">Записать</button>
+    <button class="btn ghost" id="rl-csv">Выгрузить CSV</button>
+    <button class="btn ghost" id="rl-clr">Очистить</button>
+  </div>
+  <div id="rl-tbl" style="margin-top:16px"></div>
+</div>
+
+<div class="card">
+  <h3>Куда смотреть по цифрам</h3>
+  <div id="rp-links" class="rp-links"></div>
+  <div class="hr"></div>
+  <label class="f"><span>Яндекс.Метрика — номер счётчика</span>
+    <input id="metrika" placeholder="12345678"></label>
+  <p class="sub" style="margin-top:8px">Метрика в Казахстане показывает больше, чем Google Analytics:
+    карта кликов, запись сессий, откуда пришли. Заводится за 5 минут на metrika.yandex.kz,
+    номер вписать сюда — код встанет на сайт сам.</p>
+</div>
+
+<div class="card">
+  <h3>План роста</h3>
+  <p class="sub">Отмечайте сделанное — прогресс сохраняется.</p>
+  <div id="rp-plan"></div>
+</div>
+</section>
+
+<section class="pane" id="p-sys">
+<h2>Система</h2>
+<div class="note">Сейчас правки и статистика хранятся в этом браузере — это полноценная работающая версия без хостинга и базы. Когда подключим сервер, данные переедут в базу, и правки будут видны всем посетителям сразу.</div>
+<div class="card"><h3>Доступ</h3><div class="grid">
+    <div class="card" style="border-color:rgba(201,164,76,.35)">
+      <h3>PIN администратора</h3>
+      <p class="sub">Задаётся на сервере в файле <code>/etc/gaukhartas.env</code> и здесь не показывается —
+      раньше он лежал в <code>content.js</code>, который открыт всем.<br><br>
+      Сменить: зайти на сервер, отредактировать <code>ADMIN_PIN</code>, выполнить
+      <code>sudo systemctl restart gaukhartas</code>.</p>
+    </div>
+<label class="f"><span>Пересчёт на выходные</span><select id="s-we"><option value="1">Включён</option><option value="0">Выключен</option></select></label>
+</div></div>
+<div class="card"><h3>Калькулятор сметы</h3>
+<p class="sub" style="margin:0 0 14px">Когда выключен — блока сметы на сайте нет вообще, а кнопки «посчитать смету» ведут на форму заявки. Включается одной галкой в любой момент — сразу во всех четырёх версиях.</p>
+<div class="grid">
+<label class="f"><span>Показывать калькулятор на сайте</span><select id="s-calc"><option value="0">Выключен — сметы нет</option><option value="1">Включён — смета видна всем</option></select></label>
+</div></div>
+<div class="card"><h3>Сохранение и восстановление</h3>
+<div class="row">
+<button class="btn gh" id="exp">Выгрузить данные (JSON)</button>
+<button class="btn gh" id="impB">Загрузить из файла</button>
+<input type="file" id="imp" accept="application/json" style="display:none">
+<button class="btn gh" id="expJs">Выгрузить content.js</button>
+<button class="btn dg" id="rst">Сбросить к исходным</button>
+</div>
+<div class="hr"></div>
+<p class="sub" style="margin:0">Кнопка «content.js» даёт готовый файл: замените им такой же на сервере — и правки увидят все посетители.</p></div>
+<div class="card"><h3>Статистика</h3><div class="row"><button class="btn dg" id="clrS">Обнулить статистику</button></div></div>
+</section>
+</main>
+<div id="toast"></div>
+<script src="../content.js"></script>
+<script src="admin.js?v=3209696c"></script>
+</body></html>

@@ -1,0 +1,6 @@
+node_modules/
+deploy/data/
+*.pem
+*.env
+.env
+.DS_Store

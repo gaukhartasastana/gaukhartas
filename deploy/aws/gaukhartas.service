@@ -1,0 +1,25 @@
+# /etc/systemd/system/gaukhartas.service
+[Unit]
+Description=Gaukhartas API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/gaukhartas-api
+EnvironmentFile=/etc/gaukhartas.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# песочница: процесс не лезет никуда, кроме своей папки с данными
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/gaukhartas-api/data
+
+[Install]
+WantedBy=multi-user.target

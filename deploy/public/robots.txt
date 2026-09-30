@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /app/
+Disallow: /deploy/
+Disallow: /*?lang=ru$
+
+# Яндексу отдельно: тот же набор правил
+User-agent: Yandex
+Allow: /
+Disallow: /admin/
+Disallow: /app/
+Disallow: /deploy/
+
+# Нейросети-краулеры пропускаем: пусть тоже знают про зал
+User-agent: GPTBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://gaukhartas.com/sitemap.xml
