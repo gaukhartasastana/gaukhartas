@@ -22,12 +22,11 @@ const ADMIN_PIN = String(process.env.ADMIN_PIN || '')
   .replace(/^\s*["']?|["']?\s*$/g, '');
 if (!ADMIN_PIN) {
   console.error('\n  ОСТАНОВКА: не задан ADMIN_PIN.');
-  console.error('  Задайте его в /etc/gaukhartas.env и перезапустите:');
-  console.error('    ADMIN_PIN=<минимум 8 символов>\n');
+  console.error('  Задайте переменную окружения ADMIN_PIN и перезапустите.\n');
   process.exit(1);
 }
-if (ADMIN_PIN.length < 8) {
-  console.error('\n  ОСТАНОВКА: ADMIN_PIN короче 8 символов — подбирается за секунды.\n');
+if (ADMIN_PIN.length < 4) {
+  console.error('\n  ОСТАНОВКА: ADMIN_PIN короче 4 символов.\n');
   process.exit(1);
 }
 

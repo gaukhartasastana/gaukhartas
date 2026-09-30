@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: gaukhartas
+    runtime: node
+    plan: free
+    buildCommand: "npm install --prefix deploy"
+    startCommand: "node deploy/server.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+    rootDir: .
